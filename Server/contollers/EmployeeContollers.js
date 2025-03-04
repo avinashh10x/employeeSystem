@@ -2,6 +2,8 @@ const Employee = require('../model/employeeModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const SECRETKEY = process.env.secretKey ||  'RawatSir'
+
 // Home API
 const Home = async (req, res) => {
     res.send('Hello, World! from employee server');
@@ -21,7 +23,7 @@ const GetAllEmployees = async (req, res) => {
 // Registration API
 const Register = async (req, res) => {
     try {
-        const { employeeId, name, phone,role, bloodGroup, password } = req.body;
+        const { employeeId, name, phone, role, bloodGroup, password } = req.body;
         if (!employeeId || !name || !phone || !bloodGroup || !password) {
             return res.status(400).json({ message: 'Please provide all fields' });
         }
@@ -49,7 +51,7 @@ const Register = async (req, res) => {
         // Generate JWT Token
         const token = jwt.sign(
             { employeeId: newEmployee.employeeId },
-            process.env.SECRET_KEY,
+            SECRETKEY,
             { expiresIn: '1h' }
         );
 
@@ -74,7 +76,9 @@ const Register = async (req, res) => {
 const Login = async (req, res) => {
     try {
         const { employeeId, password } = req.body;
+        console.log(employeeId, password);
         if (!employeeId || !password) {
+
             return res.status(400).json({ message: 'Please provide employeeId and password' });
         }
 
@@ -93,7 +97,7 @@ const Login = async (req, res) => {
         // Generate JWT Token
         const token = jwt.sign(
             { employeeId: employee.employeeId },
-            process.env.SECRET_KEY,
+            SECRETKEY,
             { expiresIn: '1h' }
         );
 
@@ -115,10 +119,13 @@ const Login = async (req, res) => {
     }
 };
 
+// Update Employee API
+const UpdateEmployee = (req, res) => { }
+
 module.exports = {
     Home,
     Register,
     Login,
     GetAllEmployees,
- 
+    UpdateEmployee
 };
