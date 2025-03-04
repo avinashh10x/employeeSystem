@@ -141,11 +141,16 @@ const UpdateEmployee = async (req, res) => {
             return res.status(400).json({ message: 'Please provide all fields' });
         }
         const hashedPassword = await bcrypt.hash(password, 12);
+        
         const newEmployee = await Employee.findOneAndUpdate(
             { employeeId },
             { name, phone, role, bloodGroup, password: hashedPassword },
             { new: true, runValidators: true },
         )
+
+        if (!newEmployee) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
         // Convert document to object and remove password
         const employeeObj = newEmployee.toObject();
         delete employeeObj.password;
