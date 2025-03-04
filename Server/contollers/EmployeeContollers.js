@@ -2,7 +2,7 @@ const Employee = require('../model/employeeModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
-const SECRETKEY = process.env.secretKey ||  'RawatSir'
+const SECRETKEY = process.env.secretKey || 'RawatSir'
 
 // Home API
 const Home = async (req, res) => {
@@ -68,7 +68,7 @@ const Register = async (req, res) => {
 
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({ message: 'Server error while creating' });
     }
 };
 
@@ -119,13 +119,49 @@ const Login = async (req, res) => {
     }
 };
 
+
 // Update Employee API
-const UpdateEmployee = (req, res) => { }
+const UpdateEmployee = (req, res) => {
+    try {
+        const { employeeId, name, phone, role, bloodGroup, password } = req.body;
+        if (!employeeId || !name || !phone || !bloodGroup || !password) {
+            return res.status(400).json({ message: 'Please provide all fields' });
+        }
+        Employee.findOneAndUpdate(
+            { employeeId },
+            { name, phone, role, bloodGroup, password },
+            { new: true, runValidators: true },
+        )
+        res.status(201).json({ success: true, message: 'Employee updated successfully' });
+
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error while updating' });
+    }
+
+}
+
+const removeEmployee = (req, res) => {
+    try {
+        const { employeeId } = req.body;
+        if (!employeeId) {
+            return res.status(400).json({ message: 'Please provide employeeId' });
+        }
+        Employee.findOneAndDelete({ employeeId });
+        res.status(201).json({ success: true, message: 'Employee deleted successfully' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server error while deleting' });
+    }
+}
 
 module.exports = {
     Home,
     Register,
     Login,
     GetAllEmployees,
-    UpdateEmployee
+    UpdateEmployee,
+    removeEmployee
 };
