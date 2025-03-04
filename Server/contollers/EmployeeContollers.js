@@ -23,7 +23,10 @@ const GetAllEmployees = async (req, res) => {
 // Registration API
 const Register = async (req, res) => {
     try {
-        const { employeeId, name, phone, role, bloodGroup, password } = req.body;
+        const { employeeId, name, phone, role, bloodGroup, password, gender } = req.body;
+
+        console.log("Request Body:", req.body); // Debugging
+
         if (!employeeId || !name || !phone || !bloodGroup || !password) {
             return res.status(400).json({ message: 'Please provide all fields' });
         }
@@ -34,19 +37,26 @@ const Register = async (req, res) => {
             return res.status(400).json({ message: 'Employee ID already exists' });
         }
 
+        console.log("Employee ID is unique, proceeding...");
+
         // Hash password before saving
         const hashedPassword = await bcrypt.hash(password, 12);
+        console.log("Password hashed successfully");
 
         const newEmployee = new Employee({
             employeeId,
             name,
             phone,
+            gender,
             role,
             bloodGroup,
             password: hashedPassword
         });
 
+        console.log("Employee object created:", newEmployee);
+
         await newEmployee.save();
+        console.log("Employee saved to DB successfully");
 
         // Generate JWT Token
         const token = jwt.sign(
@@ -54,6 +64,8 @@ const Register = async (req, res) => {
             SECRETKEY,
             { expiresIn: '1h' }
         );
+
+        console.log("JWT Token generated");
 
         // Convert document to object and remove password
         const employeeObj = newEmployee.toObject();
@@ -67,10 +79,11 @@ const Register = async (req, res) => {
         });
 
     } catch (error) {
-        console.error(error);
-        res.status(500).json({ message: 'Server error while creating' });
+        console.error("Error in Register API:", error); // Print full error
+        res.status(500).json({ message: 'Server error while creating', error: error.message });
     }
 };
+
 
 // Login API
 const Login = async (req, res) => {
@@ -121,17 +134,22 @@ const Login = async (req, res) => {
 
 
 // Update Employee API
-const UpdateEmployee = (req, res) => {
+const UpdateEmployee = async (req, res) => {
     try {
         const { employeeId, name, phone, role, bloodGroup, password } = req.body;
         if (!employeeId || !name || !phone || !bloodGroup || !password) {
             return res.status(400).json({ message: 'Please provide all fields' });
         }
-        Employee.findOneAndUpdate(
+        const hashedPassword = await bcrypt.hash(password, 12);
+        const newEmployee = await Employee.findOneAndUpdate(
             { employeeId },
-            { name, phone, role, bloodGroup, password },
+            { name, phone, role, bloodGroup, password: hashedPassword },
             { new: true, runValidators: true },
         )
+        // Convert document to object and remove password
+        const employeeObj = newEmployee.toObject();
+        delete employeeObj.password;
+
         res.status(201).json({ success: true, message: 'Employee updated successfully' });
 
 
@@ -142,13 +160,18 @@ const UpdateEmployee = (req, res) => {
 
 }
 
-const removeEmployee = (req, res) => {
+const removeEmployee = async (req, res) => {
     try {
         const { employeeId } = req.body;
         if (!employeeId) {
             return res.status(400).json({ message: 'Please provide employeeId' });
         }
-        Employee.findOneAndDelete({ employeeId });
+        const deletedEmployee = await Employee.findOneAndDelete({ employeeId });
+
+        if (!deletedEmployee) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
+
         res.status(201).json({ success: true, message: 'Employee deleted successfully' });
 
     } catch (error) {
