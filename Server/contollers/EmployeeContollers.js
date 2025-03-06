@@ -13,7 +13,7 @@ const Home = async (req, res) => {
 
 const GetAllEmployees = async (req, res) => {
     try {
-        const employees = await Employee.find({}).select('-password');
+        const employees = await Employee.find({}).sort({ _id: -1 }).select('-password');
         res.json(employees);
     } catch (error) {
         res.status(500).json({ message: error.message });
