@@ -31,11 +31,15 @@ const employeeSchema = new mongoose.Schema({
         type: String,
         enum: ["male", "female"],
         required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
+    dob:{
+        type: Date,
+        required: true
     }
-    // email: {
-    //     type: String,
-    //     required: true
-    // },
     // salary: {
     //     type: Number,
     //     required: true

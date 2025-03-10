@@ -9,7 +9,7 @@ const bodyParser = require('body-parser');
 
 
 const app = express();
-const PORT = process.env.PORT || 8000; 
+const PORT = process.env.PORT || 8000;
 app.use(cors());
 
 connectDb();

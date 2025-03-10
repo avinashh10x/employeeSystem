@@ -23,7 +23,7 @@ const GetAllEmployees = async (req, res) => {
 // Registration API
 const Register = async (req, res) => {
     try {
-        const { employeeId, name, phone, role, bloodGroup, password, gender } = req.body;
+        const { employeeId, name, phone, role, bloodGroup, password, gender,dob,email } = req.body;
 
         console.log("Request Body:", req.body); // Debugging
 
@@ -50,6 +50,8 @@ const Register = async (req, res) => {
             gender,
             role,
             bloodGroup,
+            dob,
+            email,
             password: hashedPassword
         });
 
@@ -59,11 +61,11 @@ const Register = async (req, res) => {
         console.log("Employee saved to DB successfully");
 
         // Generate JWT Token
-        const token = jwt.sign(
-            { employeeId: newEmployee.employeeId },
-            SECRETKEY,
-            { expiresIn: '1h' }
-        );
+        // const token = jwt.sign(
+        //     { employeeId: newEmployee.employeeId },
+        //     SECRETKEY,
+        //     { expiresIn: '1h' }
+        // );
 
         console.log("JWT Token generated");
 
@@ -73,7 +75,7 @@ const Register = async (req, res) => {
 
         res.status(201).json({
             success: true,
-            token: token,
+            // token: token,
             employee: employeeObj,
             message: 'Employee registered successfully'
         });
