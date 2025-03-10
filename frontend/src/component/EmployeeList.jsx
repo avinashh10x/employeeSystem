@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { getAllEmployees } from "../services/EmployeeServices";
+import CreateEmployee from "./CreateEmployee";
 
 
 function EmployeeList() {
@@ -17,6 +18,9 @@ function EmployeeList() {
     return (
         <div className="p-5 bg-gray-900 text-white h-screen">
             <h2 className="text-2xl font-semibold mb-5">Employees</h2>
+            <div>
+                <CreateEmployee />
+            </div>
             {loading ? (
                 <p>Loading...</p>
             ) : (
