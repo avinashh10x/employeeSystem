@@ -29,7 +29,9 @@
     "role": "string",
     "bloodGroup": "string",
     "password": "string",
-    "gender": "male" | "female"
+    "gender": "male" | "female",
+    "email": "string",
+    "dob":"date"
   }
   ```
 - **Response:**  
@@ -43,7 +45,9 @@
       "phone": "string",
       "bloodGroup": "string",
       "role": "string",
-      "gender": "string"
+      "gender": "string",
+      "email": "string",
+       "dob": "date"
     },
     "message": "Employee registered successfully"
   }
