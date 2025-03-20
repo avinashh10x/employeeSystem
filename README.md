@@ -101,6 +101,27 @@
   ]
   ```
 
+### **4. Fetch single Employees**
+- **Method:** GET  
+- **Endpoint:** `/api/getsingleemployee/`
+- **Authtoken:** `token`
+- **Description:** Retrieves a employees excluding passwords.
+- **Response:**  
+  ```json
+  [
+    {
+      "employeeId": "string",
+      "name": "string",
+      "phone": "string",
+      "role": "string",
+      "bloodGroup": "string",
+      "gender": "string",
+      "email": "string",
+    }
+  ]
+  ```
+
+
 ---
 
 ### **5. Update Employee Details**
@@ -145,4 +166,5 @@
     "message": "Employee deleted successfully"
   }
   ```
+
 
