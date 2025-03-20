@@ -101,7 +101,7 @@
   ]
   ```
 
-### **4. Fetch single Employees**
+### **5. Fetch single Employees**
 - **Method:** GET  
 - **Endpoint:** `/api/getsingleemployee/`
 - **Authtoken:** `token`
@@ -124,7 +124,7 @@
 
 ---
 
-### **5. Update Employee Details**
+### **6. Update Employee Details**
 - **Method:** PATCH  
 - **Endpoint:** `/api/updateemployee/`
 - **Description:** Updates an existing employee's details.
@@ -149,7 +149,7 @@
 
 ---
 
-### **6. Remove an Employee**
+### **7. Remove an Employee**
 - **Method:** DELETE  
 - **Endpoint:** `/api/removeEmployee/`
 - **Description:** Deletes an employee using their employee ID.
