@@ -19,6 +19,19 @@ const GetAllEmployees = async (req, res) => {
     }
 };
 
+const GetSingleEmployee = async (req, res) => {
+    try {
+        const employee = await Employee.findOne({ employeeId: req.employeeId  }).select('-password');
+        if (!employee) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
+        res.json(employee);
+
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+}
+
 // Registration API
 const Register = async (req, res) => {
     try {
@@ -116,13 +129,18 @@ const Login = async (req, res) => {
 // Update Employee API
 const UpdateEmployee = async (req, res) => {
     try {
-        const { employeeId, name, phone, role, bloodGroup, password } = req.body;
+        const { employeeId, name, phone, role, bloodGroup, password,email,dob } = req.body;
+        const token = req.headers.authorization.split(' ')[1];
+        const decoded = jwt.verify(token, SECRETKEY);
+        if (!decoded) {
+            return res.status(401).json({ message: 'Invalid token' });
+        }
 
         if (!employeeId || !name || !phone || !bloodGroup) {
             return res.status(400).json({ message: 'Please provide all required fields' });
         }
 
-        let updateData = { name, phone, role, bloodGroup };
+        let updateData = { name, phone, role, bloodGroup,email,dob };
 
         if (password) {
             updateData.password = await bcrypt.hash(password, 12);
@@ -149,6 +167,7 @@ const UpdateEmployee = async (req, res) => {
         res.status(500).json({ message: 'Server error while updating' });
     }
 };
+
 
 // Remove Employee API
 const removeEmployee = async (req, res) => {
@@ -190,5 +209,6 @@ module.exports = {
     GetAllEmployees,
     UpdateEmployee,
     removeEmployee,
-    logout
+    logout,
+    GetSingleEmployee
 };

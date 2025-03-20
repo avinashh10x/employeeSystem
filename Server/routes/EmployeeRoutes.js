@@ -1,7 +1,15 @@
 const express = require('express');
-const { Login, Home, Register, GetAllEmployees, UpdateEmployee, removeEmployee } = require('../contollers/EmployeeContollers')
+const { Login,
+    Home,
+    Register,
+    GetAllEmployees,
+    UpdateEmployee,
+    removeEmployee,
+    GetSingleEmployee
+} = require('../contollers/EmployeeContollers')
 
 const router = express.Router();
+const authMiddleware = require('../middleware/authMiddleware')
 
 
 
@@ -10,7 +18,8 @@ router.post('/login', Login);
 router.post('/register', Register);
 router.get('/getemployees', GetAllEmployees);
 router.patch('/updateemployee', UpdateEmployee);
-router.delete('/removeEmployee', removeEmployee );
+router.delete('/removeEmployee', removeEmployee);
+router.get('/getsingleemployee', authMiddleware, GetSingleEmployee);
 
 
 
