@@ -130,12 +130,7 @@ const Login = async (req, res) => {
 const UpdateEmployee = async (req, res) => {
     try {
         const { employeeId, name, phone, role, bloodGroup, password,email,dob } = req.body;
-        const token = req.headers.authorization.split(' ')[1];
-        const decoded = jwt.verify(token, SECRETKEY);
-        if (!decoded) {
-            return res.status(401).json({ message: 'Invalid token' });
-        }
-
+       
         if (!employeeId || !name || !phone || !bloodGroup) {
             return res.status(400).json({ message: 'Please provide all required fields' });
         }

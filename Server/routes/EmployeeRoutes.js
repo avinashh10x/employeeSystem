@@ -17,7 +17,7 @@ router.get('/', Home);
 router.post('/login', Login);
 router.post('/register', Register);
 router.get('/getemployees', GetAllEmployees);
-router.patch('/updateemployee', UpdateEmployee);
+router.patch('/updateemployee', authMiddleware, UpdateEmployee);
 router.delete('/removeEmployee', removeEmployee);
 router.get('/getsingleemployee', authMiddleware, GetSingleEmployee);
 
