@@ -68,7 +68,7 @@ const Register = async (req, res) => {
         const employeeObj = newEmployee.toObject();
         delete employeeObj.password;
 
-        res.status(201).json({
+        res.status(200).json({
             success: true,
             employee: employeeObj,
             message: 'Employee registered successfully'
