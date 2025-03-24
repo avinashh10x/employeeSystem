@@ -39,12 +39,26 @@ const employeeSchema = new mongoose.Schema({
     dob:{
         type: Date,
         required: true
-    }
+    },
+    // jwt:{
+    //     type: String,
+    //     required: true
+    // }
+    // city:{
+    //     type: String,
+    //     required: true
+    // },
+    // state:{
+    //     type: String,
+    //     required: true
+    // }
+
     // salary: {
     //     type: Number,
     //     required: true
     // }
 }, { timestamps: true });
+
 
 const Employee = mongoose.model('Employee', employeeSchema);
 

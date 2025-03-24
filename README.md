@@ -108,7 +108,10 @@
 - **Description:** Retrieves a employees excluding passwords.
 - **Response:**  
   ```json
-  [
+  {
+    
+     "success": true,
+    "message": "Fetched data successfully",
     {
       "employeeId": "string",
       "name": "string",
@@ -118,7 +121,8 @@
       "gender": "string",
       "email": "string",
     }
-  ]
+  }
+  
   ```
 
 
@@ -136,7 +140,7 @@
     "phone": "string",
     "role": "string",
     "bloodGroup": "string",
-    "password": "string"
+    "password": "string",
   }
   ```
 - **Response:**  

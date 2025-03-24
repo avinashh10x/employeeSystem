@@ -21,11 +21,15 @@ const GetAllEmployees = async (req, res) => {
 
 const GetSingleEmployee = async (req, res) => {
     try {
-        const employee = await Employee.findOne({ employeeId: req.employeeId  }).select('-password');
+        const employee = await Employee.findOne({ employeeId: req.employeeId }).select('-password');
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
-        res.json(employee);
+        res.status(200).json({
+            success: true,
+            message: 'fetched data successfully',
+            employee
+        });
 
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -59,7 +63,8 @@ const Register = async (req, res) => {
             bloodGroup,
             dob,
             email,
-            password: hashedPassword
+            password: hashedPassword,
+
         });
 
         await newEmployee.save();
@@ -86,11 +91,13 @@ const Login = async (req, res) => {
         const { employeeId, password } = req.body;
 
         if (!employeeId || !password) {
-            return res.status(400).json({ message: 'Please provide employeeId and password' });
+            return res.status(400).json({ message: 'Incorrect Employee ID or Password. Please try again.' });
         }
 
+
         // Find employee by ID
-        const employee = await Employee.findOne({ employeeId });
+        // const employee = await Employee.findOne({ employeeId });
+        const employee = await Employee.findOne({ employeeId },);
         if (!employee) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
@@ -129,13 +136,13 @@ const Login = async (req, res) => {
 // Update Employee API
 const UpdateEmployee = async (req, res) => {
     try {
-        const { employeeId, name, phone, role, bloodGroup, password,email,dob } = req.body;
-       
-        if (!employeeId || !name || !phone || !bloodGroup) {
+        const { employeeId, name, phone, role, bloodGroup, password, email, dob, city, state } = req.body;
+
+        if (!employeeId || !name || !phone || !bloodGroup || !email || !dob || !city || !state) {
             return res.status(400).json({ message: 'Please provide all required fields' });
         }
 
-        let updateData = { name, phone, role, bloodGroup,email,dob };
+        let updateData = { name, phone, role, bloodGroup, email, dob, city, state };
 
         if (password) {
             updateData.password = await bcrypt.hash(password, 12);
@@ -187,15 +194,7 @@ const removeEmployee = async (req, res) => {
     }
 };
 
-// Logout API
-const logout = async (req, res) => {
-    try {
-        res.status(200).json({ success: true, message: 'Logged out successfully' });
-    } catch (error) {
-        console.error("Error in logout API:", error);
-        res.status(500).json({ message: 'Server error while logging out' });
-    }
-};
+
 
 module.exports = {
     Home,
@@ -204,6 +203,5 @@ module.exports = {
     GetAllEmployees,
     UpdateEmployee,
     removeEmployee,
-    logout,
     GetSingleEmployee
 };

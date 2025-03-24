@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getAllEmployees } from "../services/EmployeeServices";
 import CreateEmployee from "./CreateEmployee";
+import { TrashIcon } from "@heroicons/react/24/solid";
+import DeleteEmployee from "./DeleteEmployee";
 
 
 function EmployeeList() {
@@ -47,6 +49,9 @@ function EmployeeList() {
                                     <td className="p-2">{emp.phone}</td>
                                     <td className="p-2">{emp.bloodGroup}</td>
                                     <td className="p-2">{new Date(emp.createdAt).toLocaleString()}</td>
+                                    {/* <td className="p-2"><TrashIcon className="h-6 text-white" /></td> */}
+                                    <td className="p-2"><DeleteEmployee id={emp.employeeId} /></td>
+                                    
                                 </tr>
                             ))
                         ) : (
