@@ -22,7 +22,7 @@ router.get('/getemployees', GetAllEmployees);
 router.patch('/updateemployee', authMiddleware, UpdateEmployee);
 router.delete('/removeEmployee', removeEmployee);
 router.get('/getsingleemployee', authMiddleware, GetSingleEmployee);
-router.post('/uploadimg', upload.single("image"), uploadmedia)
+router.post('/uploadimg', authMiddleware, upload.single("image"), uploadmedia)
 
 
 
