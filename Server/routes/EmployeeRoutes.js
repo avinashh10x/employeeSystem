@@ -5,11 +5,13 @@ const { Login,
     GetAllEmployees,
     UpdateEmployee,
     removeEmployee,
-    GetSingleEmployee
+    GetSingleEmployee,
+    uploadmedia
 } = require('../contollers/EmployeeContollers')
 
 const router = express.Router();
-const authMiddleware = require('../middleware/authMiddleware')
+const authMiddleware = require('../middleware/authMiddleware');
+const { default: upload } = require('../middleware/multer.middleware');
 
 
 
@@ -20,6 +22,7 @@ router.get('/getemployees', GetAllEmployees);
 router.patch('/updateemployee', authMiddleware, UpdateEmployee);
 router.delete('/removeEmployee', removeEmployee);
 router.get('/getsingleemployee', authMiddleware, GetSingleEmployee);
+router.post('/uploadimg', upload.single("image"), uploadmedia)
 
 
 

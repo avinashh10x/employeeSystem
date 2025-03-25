@@ -172,3 +172,20 @@
   ```
 
 
+
+### **8. Upload Media**
+- **Method:** POST  
+- **Endpoint:** `/api/uploadimg/`
+- **Description:** Uploads an image to Cloudinary.
+- **Request Body:** Form-data with key image and the file to be uploaded.
+
+- **Response:**  
+  ```json
+  {
+  "message": "File uploaded successfully",
+  "status": true,
+  "cloudinaryUrl": "string"
+  }
+  ```
+
+

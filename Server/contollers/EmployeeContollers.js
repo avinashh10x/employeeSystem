@@ -1,6 +1,7 @@
 const Employee = require('../model/employeeModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { default: uploadOnCloudinary } = require('../config/cloudinary');
 
 const SECRETKEY = process.env.SECRETKEY || 'yourSecretKey'; // Ensure env variable is set
 
@@ -194,6 +195,33 @@ const removeEmployee = async (req, res) => {
     }
 };
 
+const uploadmedia = async (req, res) => {
+    try {
+        if (!req.file) {
+            return res.status(400).json({ error: "No file uploaded" });
+        }
+
+        if (req.file.size > 10485760) {
+            return res.status(400).json({ error: "File size too large. Maximum is 5MB" });
+        }
+
+        const response = await uploadOnCloudinary(req.file.path)
+        if (!response) {
+            return res.status(500).json({ error: "Failed to upload to cloudinary" });
+        }
+
+        res.json({
+            message: "File uploaded successfully",
+            // filename: req.file.filename,
+            status: true,
+            cloudinaryUrl: response.url,
+            // cloudinaryPublicId: response.public_id,
+        });
+    } catch (error) {
+        res.status(500).json({ error: "Upload failed" }, error);
+    }
+}
+
 
 
 module.exports = {
@@ -203,5 +231,7 @@ module.exports = {
     GetAllEmployees,
     UpdateEmployee,
     removeEmployee,
-    GetSingleEmployee
+    GetSingleEmployee,
+    uploadmedia,
+
 };
