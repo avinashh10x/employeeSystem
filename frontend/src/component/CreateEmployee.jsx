@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/solid";
 import { createEmployee } from "../services/EmployeeServices"; // Ensure this path is correct
 
-const CreateEmployee = () => {
+const CreateEmployee = ({ onEmployeeCreated }) => {
   const [showModal, setShowModal] = useState(false);
   const [employeeData, setEmployeeData] = useState({
     employeeId: "",
@@ -13,6 +13,7 @@ const CreateEmployee = () => {
     password: "",
     email: "",
     dob: "",
+    gender: "",
   });
 
   // Handle input change
@@ -23,17 +24,8 @@ const CreateEmployee = () => {
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { employeeId, name, phone, role, bloodGroup, password, email, dob } =
-      employeeData;
-
-    if (!name || !phone || !role || !bloodGroup || !password || !employeeId) {
-      alert("All fields are required!");
-      return;
-    }
-
-    const response = await createEmployee(employeeData);
-
-    if (response) {
+    try {
+      const newEmployee = await createEmployee(employeeData);
       alert("Employee created successfully!");
       setShowModal(false);
       setEmployeeData({
@@ -47,7 +39,9 @@ const CreateEmployee = () => {
         dob: "",
         gender: "",
       });
-    } else {
+      onEmployeeCreated(newEmployee); // Notify parent component about the new employee
+    } catch (error) {
+      console.error("Error creating employee:", error.message);
       alert("Failed to create employee.");
     }
   };

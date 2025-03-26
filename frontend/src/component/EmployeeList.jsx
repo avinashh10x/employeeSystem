@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { getAllEmployees } from "../services/EmployeeServices";
 import CreateEmployee from "./CreateEmployee";
-import { TrashIcon } from "@heroicons/react/24/solid";
+import EditEmployee from "./EditEmployee";
 import DeleteEmployee from "./DeleteEmployee";
-
 
 function EmployeeList() {
     const [employees, setEmployees] = useState([]);
@@ -17,11 +16,21 @@ function EmployeeList() {
         };
         fetchEmployees();
     }, []);
+
+    const handleEmployeeDeleted = (deletedEmployeeId) => {
+        const updatedEmployees = employees.filter(emp => emp.employeeId !== deletedEmployeeId);
+        setEmployees(updatedEmployees); // Update the list after deletion
+    };
+
+    const handleEmployeeCreated = (newEmployee) => {
+        setEmployees([newEmployee, ...employees]); // Add the new employee to the top of the list
+    };
+
     return (
-        <div className="p-5 bg-gray-900 text-white h-screen">
+        <div className="p-5 bg-gray-900 text-white min-h-screen">
             <h2 className="text-2xl font-semibold mb-5">Employees</h2>
             <div>
-                <CreateEmployee />
+                <CreateEmployee onEmployeeCreated={handleEmployeeCreated} />
             </div>
             {loading ? (
                 <p>Loading...</p>
@@ -36,6 +45,8 @@ function EmployeeList() {
                             <th className="p-2">Phone</th>
                             <th className="p-2">Blood Group</th>
                             <th className="p-2">Created At</th>
+                            <th className="p-2">DOB</th>
+                            <th className="p-2">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -49,14 +60,19 @@ function EmployeeList() {
                                     <td className="p-2">{emp.phone}</td>
                                     <td className="p-2">{emp.bloodGroup}</td>
                                     <td className="p-2">{new Date(emp.createdAt).toLocaleString()}</td>
-                                    {/* <td className="p-2"><TrashIcon className="h-6 text-white" /></td> */}
-                                    <td className="p-2"><DeleteEmployee id={emp.employeeId} /></td>
-                                    
+                                    <td className="p-2">{new Date(emp.dob).toLocaleDateString()}</td>
+                                    <td className="p-2 flex space-x-2">
+                                        <DeleteEmployee
+                                            id={emp.employeeId}
+                                            onDelete={handleEmployeeDeleted}
+                                        />
+                                        <EditEmployee data={emp} />
+                                    </td>
                                 </tr>
                             ))
                         ) : (
                             <tr>
-                                <td colSpan="7" className="p-2 text-center">No employees found</td>
+                                <td colSpan="9" className="p-2 text-center">No employees found</td>
                             </tr>
                         )}
                     </tbody>
@@ -66,4 +82,4 @@ function EmployeeList() {
     );
 }
 
-export default EmployeeList
+export default EmployeeList;

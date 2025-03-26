@@ -26,7 +26,7 @@ const COLORS = ["#8884d8", "#82ca9d"];
 
 function Homepage() {
   return (
-    <div className="p-5 bg-gray-900 text-white h-screen">
+    <div className="p-5 bg-gray-900 text-white min-h-screen">
       <h2 className="text-2xl font-semibold mb-5">Admin Homepage</h2>
 
       <div className="grid grid-cols-4 gap-5 mb-10">

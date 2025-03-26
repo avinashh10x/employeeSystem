@@ -40,7 +40,7 @@ const loginEmployee = async (employeeId, password) => {
 // Update employee details
 const updateEmployee = async (employee) => {
     try {
-        const response = await axios.put(`${API_URL}/updateemployee`, employee);
+        const response = await axios.patch(`${API_URL}/updateemployee`, employee); // Changed PUT to PATCH
         return response.data;
     } catch (error) {
         console.error("Error updating employee:", error.message);
@@ -52,7 +52,7 @@ const updateEmployee = async (employee) => {
 const deleteEmployee = async (employeeId) => {
     try {
         const response = await axios.delete(`${API_URL}/removeemployee`, {
-            data: { employeeId } // Sending employeeId in the request body
+            data: { employeeId } // Ensure employeeId is sent in the request body
         });
         return response.data;
     } catch (error) {

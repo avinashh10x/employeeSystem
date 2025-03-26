@@ -5,11 +5,12 @@ import { Route, Routes } from 'react-router-dom'
 import SignIn from './pages/SignIn'
 import Sidebar from './component/Sidebar'
 import EmployeeList from './component/EmployeeList'
+import EmployeeDetails from './pages/EmployeeDetails'
 
 
 function App() {
   return (
-    <div className='flex'>
+    <div className='flex  bg-gray-800'>
       <Sidebar />
       <div className='w-full'>
 
@@ -19,6 +20,8 @@ function App() {
           <Route path='/signup' element={<Signup />} />
           <Route path='/signin' element={<SignIn />} />
           <Route path='/employees' element={<EmployeeList />} />
+          <Route path='/employeesdetails' element={<EmployeeDetails />} />
+
 
         </Routes>
       </div>
