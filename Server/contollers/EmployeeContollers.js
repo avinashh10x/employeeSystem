@@ -164,7 +164,7 @@ const UpdateEmployee = async (req, res) => {
         const employeeObj = updatedEmployee.toObject();
         delete employeeObj.password;
 
-        res.status(200).json({ success: true, message: 'Employee updated successfully',employeeObj });
+        res.status(200).json({ success: true, message: 'Employee updated successfully', employeeObj });
 
     } catch (error) {
         console.error("Error in UpdateEmployee API:", error);
@@ -202,26 +202,23 @@ const uploadmedia = async (req, res) => {
             return res.status(400).json({ error: "No file uploaded" });
         }
 
-        if (req.file.size > 10485760) {
+        if (req.file.size > 5 * 1024 * 1024) {
             return res.status(400).json({ error: "File size too large. Maximum is 5MB" });
         }
 
-        const response = await uploadOnCloudinary(req.file.path)
-        if (!response) {
-            return res.status(500).json({ error: "Failed to upload to cloudinary" });
-        }
+        // Upload file buffer to Cloudinary
+        const response = await uploadOnCloudinary(req.file.buffer);
 
-        res.json({
+        res.status(200).json({
             message: "File uploaded successfully",
-            // filename: req.file.filename,
             status: true,
-            cloudinaryUrl: response.url,
-            // cloudinaryPublicId: response.public_id,
+            cloudinaryUrl: response.secure_url, // Use secure URL
         });
     } catch (error) {
-        res.status(500).json({ error: "Upload failed" }, error);
+        console.error("Error in uploadmedia:", error);
+        res.status(500).json({ error: "Upload failed", details: error.message });
     }
-}
+};
 
 
 

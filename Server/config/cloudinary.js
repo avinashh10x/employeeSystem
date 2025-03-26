@@ -1,27 +1,26 @@
-import { v2 as cloudinary } from 'cloudinary'
-import fs from 'fs'
+import { v2 as cloudinary } from 'cloudinary';
+import fs from 'fs';
 
 cloudinary.config({
-    cloud_name: process.env.cloud_name || 'storage10x',
-    api_key: process.env.api_key || '119343689196578',
-    api_secret: process.env.api_secret
+    cloud_name: process.env.CLOUD_NAME || 'storage10x',
+    api_key: process.env.API_KEY || '119343689196578',
+    api_secret: process.env.API_SECRET || 'OMFLGWK1O43L-85sGFGwUpgEQHM',
 });
 
-const uploadOnCloudinary = async (localFilePath) => {
-    try {
-        if (!localFilePath) return null;
-        const response = await cloudinary.uploader.upload(localFilePath, {
-            resource_type: 'image',
-        })
-        console.log('file is uploaded successfully', response, response.url)
-        fs.unlinkSync(localFilePath)
-        return response;
-    } catch (error) {
-        console.log('Error uploading file to cloudinaryy', error)
-        fs.unlinkSync(localFilePath)
-        throw error;
-
-    }
-}
+const uploadOnCloudinary = (fileBuffer) => {
+    return new Promise((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+            { resource_type: 'image' },
+            (error, result) => {
+                if (error) {
+                    console.error('Error uploading to Cloudinary:', error);
+                    return reject(error);
+                }
+                resolve(result);
+            }
+        );
+        uploadStream.end(fileBuffer); // Pass the file buffer to the upload stream
+    });
+};
 
 export default uploadOnCloudinary;
