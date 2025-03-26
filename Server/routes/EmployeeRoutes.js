@@ -18,11 +18,22 @@ const { default: upload } = require('../middleware/multer.middleware');
 router.get('/', Home);
 router.post('/login', Login);
 router.post('/register', Register);
-router.get('/getemployees', GetAllEmployees);
 router.patch('/updateemployee', authMiddleware, UpdateEmployee);
 router.delete('/removeEmployee', authMiddleware, removeEmployee);
 router.get('/getsingleemployee', authMiddleware, GetSingleEmployee);
-router.post('/uploadimg', authMiddleware, upload.single("image"), uploadmedia)
+router.post('/uploadimg',
+    //  authMiddleware, 
+    upload.single("image"), uploadmedia)
+
+
+router.get('/admin/getemployees', GetAllEmployees);
+router.patch('/admin/updateemployee', UpdateEmployee);
+router.delete('/admin/removeEmployee', removeEmployee);
+router.get('/admin/getsingleemployee', GetSingleEmployee);
+router.post('/admin/uploadimg',
+    //  authMiddleware, 
+    upload.single("image"), uploadmedia)
+
 
 
 

@@ -98,7 +98,7 @@ const Login = async (req, res) => {
 
         // Find employee by ID
         // const employee = await Employee.findOne({ employeeId });
-        const employee = await Employee.findOne({ employeeId },);
+        const employee = await Employee.findOne({ employeeId });
         if (!employee) {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
@@ -111,9 +111,9 @@ const Login = async (req, res) => {
 
         // Generate JWT Token
         const token = jwt.sign(
-            { employeeId: employee.employeeId },
+            { employeeId: employee.employeeId, role: employee.role },
             SECRETKEY,
-            { expiresIn: '1h' }
+            { expiresIn: '1d' }
         );
 
         res.status(200).json({
@@ -124,7 +124,8 @@ const Login = async (req, res) => {
                 employeeId: employee.employeeId,
                 name: employee.name,
                 phone: employee.phone,
-                bloodGroup: employee.bloodGroup
+                bloodGroup: employee.bloodGroup,
+                role: employee.role
             }
         });
 
@@ -137,13 +138,13 @@ const Login = async (req, res) => {
 // Update Employee API
 const UpdateEmployee = async (req, res) => {
     try {
-        const { employeeId, name, phone, role, bloodGroup, password, email, dob, city, state } = req.body;
+        const { employeeId, name, phone, role, bloodGroup, password, email, dob, avatar } = req.body;
 
-        if (!employeeId || !name || !phone || !bloodGroup || !email || !dob || !city || !state) {
+        if (!employeeId || !name || !phone || !bloodGroup || !email || !dob) {
             return res.status(400).json({ message: 'Please provide all required fields' });
         }
 
-        let updateData = { name, phone, role, bloodGroup, email, dob, city, state };
+        let updateData = { name, phone, role, bloodGroup, email, dob, avatar };
 
         if (password) {
             updateData.password = await bcrypt.hash(password, 12);
@@ -163,7 +164,7 @@ const UpdateEmployee = async (req, res) => {
         const employeeObj = updatedEmployee.toObject();
         delete employeeObj.password;
 
-        res.status(200).json({ success: true, message: 'Employee updated successfully' });
+        res.status(200).json({ success: true, message: 'Employee updated successfully',employeeObj });
 
     } catch (error) {
         console.error("Error in UpdateEmployee API:", error);

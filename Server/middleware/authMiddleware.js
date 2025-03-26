@@ -14,6 +14,7 @@ const authMiddleware = (req, res, next) => {
         }
 
         req.employeeId = decoded.employeeId;
+        req.role = decoded.role;
         
         next();
     } catch (error) {

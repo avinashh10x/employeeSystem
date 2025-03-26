@@ -11,8 +11,8 @@ const Sidebar = () => {
           {[
             "Dashboard",
             "Employees",
-            "Analytics",
-            "Messages",
+            "signup",
+            "signin",
             "Setting",
             "Help Centre"
           ].map((item, index) => (

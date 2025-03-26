@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { getAllEmployees } from "../services/EmployeeServices";
 import CreateEmployee from "./CreateEmployee";
 import EditEmployee from "./EditEmployee";
@@ -7,6 +8,7 @@ import DeleteEmployee from "./DeleteEmployee";
 function EmployeeList() {
     const [employees, setEmployees] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchEmployees = async () => {
@@ -24,6 +26,11 @@ function EmployeeList() {
 
     const handleEmployeeCreated = (newEmployee) => {
         setEmployees([newEmployee, ...employees]); // Add the new employee to the top of the list
+    };
+
+    const handleRowClick = (employee) => {
+        // Navigate to the EmployeeDetails route with the employee ID
+        navigate(`/employeesdetails/${employee.employeeId}`, { state: { employee } });
     };
 
     return (
@@ -52,7 +59,11 @@ function EmployeeList() {
                     <tbody>
                         {employees.length > 0 ? (
                             employees.map((emp, index) => (
-                                <tr key={emp.employeeId} className="border-b border-gray-700">
+                                <tr
+                                    key={emp.employeeId}
+                                    className="border-b border-gray-700 cursor-pointer hover:bg-gray-700"
+                                    onClick={() => handleRowClick(emp)}
+                                >
                                     <td className="p-2">{index + 1}</td>
                                     <td className="p-2">{emp.employeeId}</td>
                                     <td className="p-2">{emp.name}</td>
@@ -61,12 +72,12 @@ function EmployeeList() {
                                     <td className="p-2">{emp.bloodGroup}</td>
                                     <td className="p-2">{new Date(emp.createdAt).toLocaleString()}</td>
                                     <td className="p-2">{new Date(emp.dob).toLocaleDateString()}</td>
-                                    <td className="p-2 flex space-x-2">
+                                    <td onClick={(e) => e.stopPropagation()} className="p-2 flex space-x-2">
                                         <DeleteEmployee
                                             id={emp.employeeId}
                                             onDelete={handleEmployeeDeleted}
                                         />
-                                        <EditEmployee data={emp} />
+                                        <EditEmployee  data={emp} />
                                     </td>
                                 </tr>
                             ))

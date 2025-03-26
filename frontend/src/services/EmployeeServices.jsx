@@ -1,13 +1,13 @@
 import axios from "axios";
 
 // Base API URL
-const API_URL = 'https://employeesystem-4wri.onrender.com/api';
-// const API_URL = 'http://localhost:8000/api';
+// const API_URL = 'https://employeesystem-4wri.onrender.com/api';
+const API_URL = 'http://localhost:8000/api';
 
 // Fetch all employees
 const getAllEmployees = async () => {
     try {
-        const response = await axios.get(`${API_URL}/getemployees`);
+        const response = await axios.get(`${API_URL}/admin/getemployees`);
         return response.data;
     } catch (error) {
         console.error("Error fetching employees:", error.message);
@@ -37,10 +37,11 @@ const loginEmployee = async (employeeId, password) => {
     }
 }
 
+
 // Update employee details
 const updateEmployee = async (employee) => {
     try {
-        const response = await axios.patch(`${API_URL}/updateemployee`, employee); // Changed PUT to PATCH
+        const response = await axios.patch(`${API_URL}/admin/updateemployee`, employee); // Changed PUT to PATCH
         return response.data;
     } catch (error) {
         console.error("Error updating employee:", error.message);
@@ -72,11 +73,23 @@ const logoutEmployee = async () => {
     }
 }
 
+// Upload media (image)
+const uploadMedia = async (media) => {
+    try {
+        const response = await axios.post(`${API_URL}/uploadimg`, media);
+        return response.data;
+    } catch (error) {
+        console.error("Error uploading media:", error.message);
+        throw error;
+    }
+}
+
 export {
     getAllEmployees,
     createEmployee,
     loginEmployee,
     updateEmployee,
     deleteEmployee,
-    logoutEmployee
+    logoutEmployee,
+    uploadMedia
 };

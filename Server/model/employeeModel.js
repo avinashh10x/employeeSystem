@@ -30,16 +30,21 @@ const employeeSchema = new mongoose.Schema({
     gender: {
         type: String,
         enum: ["male", "female"],
+        // default: "male",
         required: true
     },
     email: {
         type: String,
         required: true
     },
-    dob:{
+    dob: {
         type: Date,
         required: true
     },
+    avatar: {
+        type: String,
+        default: null
+    }
     // jwt:{
     //     type: String,
     //     required: true

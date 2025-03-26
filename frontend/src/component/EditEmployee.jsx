@@ -32,17 +32,17 @@ function EditEmployee({ data }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const { employeeId, name, phone, role, bloodGroup, password, email, dob, gender } = employeeData;
+        // const { employeeId, name, phone, role, bloodGroup, password, email, dob, gender } = employeeData;
 
-        if (!name || !phone || !role || !bloodGroup || !password || !employeeId || !dob || !email || !gender) {
-            alert("All fields are required!");
-            return;
-        }
+        // if (!name || !phone || !role || !bloodGroup || !password || !employeeId || !dob || !email || !gender) {
+        //     alert("All fields are required!");
+        //     return;
+        // }
 
-        if (!["male", "female"].includes(gender.toLowerCase())) {
-            alert("Gender must be either 'male' or 'female'");
-            return;
-        }
+        // if (!["male", "female"].includes(gender.toLowerCase())) {
+        //     alert("Gender must be either 'male' or 'female'");
+        //     return;
+        // }
 
         const response = await updateEmployee(employeeData);
 
@@ -53,6 +53,8 @@ function EditEmployee({ data }) {
             alert("Failed to update employee.");
         }
     };
+
+
 
     return (
         <>
@@ -82,7 +84,7 @@ function EditEmployee({ data }) {
                                 { label: "Gender", name: "gender", type: "text", placeholder: "Gender" },
                                 { label: "Email", name: "email", type: "email", placeholder: "Email" },
                                 { label: "Date of Birth", name: "dob", type: "date" },
-                                { label: "Password", name: "password", type: "password" },
+                                // { label: "Password", name: "password", type: "password" },
                             ].map(({ label, name, type, placeholder, disabled }) => (
                                 <div key={name}>
                                     <label className="block text-sm font-medium text-gray-300">{label}</label>
@@ -95,7 +97,7 @@ function EditEmployee({ data }) {
                                         onChange={handleChange}
                                         className={`mt-1 w-full p-2 bg-gray-800 text-white border border-gray-600 rounded 
         ${name === "employeeId" ? "cursor-not-allowed" : "cursor-text"}`}
-                                        required
+                                        // required
                                         disabled={disabled}
                                     />
                                 </div>
@@ -106,7 +108,7 @@ function EditEmployee({ data }) {
                                 <button
                                     type="submit"
                                     className="w-full bg-blue-600 hover:bg-blue-700 cursor-pointer text-white py-2 rounded transition duration-200"
-                                    onClick={()=>console.log('l')}
+                                    onClick={handleSubmit}
                                 >
                                     Update Employee
                                 </button>
