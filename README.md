@@ -189,3 +189,10 @@
   ```
 
 
+### **9. Employee Logout**
+- **Method:** GET  
+- **Endpoint:** `/api/logout/`  
+- **Description:** Logs out the employee by invalidating the session on the backend.  
+
+#### **Frontend Implementation (Before Calling Logout API)**
+Before making a request to the logout API, ensure the JWT token is removed from storage:

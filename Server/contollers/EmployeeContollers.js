@@ -143,14 +143,14 @@ const Login = async (req, res) => {
 // Update Employee API
 const UpdateEmployee = async (req, res) => {
     try {
-        const { employeeId, name, phone, role, bloodGroup, password, email, dob, avatar } = req.body;
+        const { employeeId, name, phone, role, bloodGroup, password, email, dob, avatar, gender } = req.body;
 
-        if (!employeeId || !name || !phone || !bloodGroup || !email || !dob) {
-            return res.status(400).json({ message: 'Please provide all required fields' });
-        }
+        // if (!employeeId || !name || !phone || !bloodGroup || !email || !dob || !gender) {
+        //     return res.status(400).json({ message: 'Please provide all required fields' });
+        // }
 
 
-        let updateData = { name, phone, role, bloodGroup, email, dob, avatar };
+        let updateData = { name, phone, role, bloodGroup, email, dob, avatar, gender };
 
         if (password) {
             updateData.password = await bcrypt.hash(password, 12);
@@ -235,7 +235,7 @@ const logout = async (req, res) => {
         //     return res.status(401).json({ message: 'Invalid token' });
         // }
 
-    
+
         // Delete token from database or invalidate it
         // Invalidate token in database
         res.status(200).json({ message: 'Logged out successfully' });
