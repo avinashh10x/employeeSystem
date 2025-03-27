@@ -8,6 +8,7 @@ const {
     removeEmployee,
     GetSingleEmployee,
     uploadmedia,
+    logout,
 } = require('../contollers/EmployeeContollers');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
@@ -18,7 +19,9 @@ router.post('/login', Login);
 router.post('/register', Register);
 router.patch('/updateemployee', authMiddleware, UpdateEmployee);
 router.delete('/removeEmployee', authMiddleware, removeEmployee);
+
 router.get('/getsingleemployee', authMiddleware, GetSingleEmployee);
+router.get('/logout', authMiddleware, logout);
 router.post('/uploadimg', upload.single('image'), uploadmedia);
 
 router.get('/admin/getemployees', GetAllEmployees);
