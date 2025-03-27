@@ -11,7 +11,7 @@ const Sidebar = () => {
           {[
             "Dashboard",
             "Employees",
-            "signup",
+            // "signup",
             "signin",
             "Setting",
             "Help Centre"

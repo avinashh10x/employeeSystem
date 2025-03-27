@@ -1,15 +1,33 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { loginEmployee } from "../services/EmployeeServices";
 
 const SignIn = () => {
-  const [email, setEmail] = useState('');
+  const [Id, setId] = useState('');
   const [password, setPassword] = useState('');
+  const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Email:', email);
-    console.log('Password:', password);
+
+    try {
+      const response = await loginEmployee(Id, password)
+      console.log(Id, password)
+      if (!response) {
+        console.log('Login failed')
+        return
+      }
+      console.log(response.data)
+      sessionStorage.setItem('token', response.data.token)
+      navigate('/dashboard');
+    } catch (error) {
+      console.error("Error logging in:", error.message);
+    }
+
+
   };
+
+
 
   return (
     <div className='h-screen flex items-center justify-center bg-gray-900 text-white'>
@@ -20,12 +38,12 @@ const SignIn = () => {
         <h2 className='text-2xl font-bold text-center mb-6'>Sign In</h2>
         <form onSubmit={handleSubmit} className='space-y-4'>
           <div>
-            <label htmlFor='email' className='block text-sm font-medium'>Email</label>
+            <label htmlFor='Id' className='block text-sm font-medium'>Id</label>
             <input
-              type='email'
-              id='email'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              type='Id'
+              id='Id'
+              value={Id}
+              onChange={(e) => setId(e.target.value)}
               className='mt-1 w-full p-2 bg-gray-700 rounded focus:outline-none focus:ring-2 focus:ring-blue-500'
               required
             />
@@ -47,6 +65,7 @@ const SignIn = () => {
           </div> */}
           <button
             type='submit'
+            onClick={handleSubmit}
             className='w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded transition duration-200'
           >
             Sign In

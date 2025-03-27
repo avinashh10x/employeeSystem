@@ -30,7 +30,11 @@ const createEmployee = async (employee) => {
 const loginEmployee = async (employeeId, password) => {
     try {
         const response = await axios.post(`${API_URL}/login`, { employeeId, password });
-        return response.data;
+        // return response.data;
+        if(!response.data){
+            throw new Error("Invalid credentials");
+        }
+        return response;
     } catch (error) {
         console.error("Error logging in:", error.message);
         throw error;

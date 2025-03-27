@@ -6,6 +6,7 @@ import SignIn from './pages/SignIn';
 import Sidebar from './component/Sidebar';
 import EmployeeList from './component/EmployeeList';
 import EmployeeDetails from './pages/EmployeeDetails';
+import ProtectedRoute from './component/ProtectedRoute';
 
 function App() {
   const location = useLocation();
@@ -14,13 +15,18 @@ function App() {
   const noSidebarRoutes = ['/signup', '/signin'];
 
   return (
-    <div className="flex bg-gray-800">
+    <div className="flex bg-gray-800"> 
       {/* Conditionally render Sidebar */}
       {!noSidebarRoutes.includes(location.pathname) && <Sidebar />}
       <div className="w-full">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/dashboard" element={<HomePage />} />
+          <Route path="/dashboard" element={
+            <ProtectedRoute>
+              <HomePage />
+            </ProtectedRoute>
+
+          } />
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/employees" element={<EmployeeList />} />
