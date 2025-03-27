@@ -15,6 +15,8 @@ const authMiddleware = require('../middleware/authMiddleware');
 const upload = require('../middleware/multer.middleware').default;
 
 router.get('/', Home);
+
+
 router.post('/login', Login);
 router.post('/register', Register);
 router.patch('/updateemployee', authMiddleware, UpdateEmployee);
@@ -31,3 +33,4 @@ router.get('/admin/getsingleemployee', GetSingleEmployee);
 router.post('/admin/uploadimg', upload.single('image'), uploadmedia);
 
 module.exports = router;
+

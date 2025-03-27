@@ -136,7 +136,10 @@ const Login = async (req, res) => {
 
     } catch (error) {
         console.error("Error in Login API:", error);
-        res.status(500).json({ message: 'Server error' });
+        res.status(500).json({
+            success: false,
+            message: 'Server error'
+        });
     }
 };
 
