@@ -204,8 +204,8 @@ Before making a request to the logout API, ensure the JWT token is removed from 
 
 ### **6. create Employee **
 - **Method:** PATCH  
-- **Endpoint:** `/api/updateemployee/`
-- **Description:** Updates an existing employee's details.
+- **Endpoint:** `/api/createemployee/`
+- **Description:** create an employee.
 - **Request Body:**  
   ```json
   {
