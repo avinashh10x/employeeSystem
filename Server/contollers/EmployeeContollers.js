@@ -37,6 +37,7 @@ const GetSingleEmployee = async (req, res) => {
     }
 }
 
+
 // Registration API
 const Register = async (req, res) => {
     try {
@@ -138,6 +139,7 @@ const Login = async (req, res) => {
         console.error("Error in Login API:", error);
         res.status(500).json({
             success: false,
+
             message: 'Server error'
         });
     }
@@ -180,6 +182,40 @@ const UpdateEmployee = async (req, res) => {
         res.status(500).json({ message: 'Server error while updating' });
     }
 };
+
+const createEmployee = async (req, res) => {
+    try {
+        const employeeId = req.employeeId
+        const { avatar } = req.body;
+        if (!avatar) {
+            return res.status(400).json({ message: 'Please provide avatar' });
+        }
+
+        // const employee = await Employee.findOne(employeeId);
+        // if (!employee) {
+        //     return res.status(404).json({ message: 'Employee not found' });
+        // }
+
+        const updatedEmployee = await Employee.findOneAndUpdate(
+            { employeeId, },
+            { avatar },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedEmployee) {
+            return res.status(404).json({ message: 'Employee not found' });
+        }
+
+        // Convert document to object and remove password
+        const employeeObj = updatedEmployee.toObject();
+        delete employeeObj.password;
+
+        res.status(200).json({ success: true, message: 'Employee created successfully', employeeObj });
+
+    } catch (error) {
+        console.error("Error in createEmployee API:", error);
+    }
+}
 
 
 // Remove Employee API
@@ -258,6 +294,7 @@ module.exports = {
     removeEmployee,
     GetSingleEmployee,
     uploadmedia,
+    createEmployee,
     logout
 
 };

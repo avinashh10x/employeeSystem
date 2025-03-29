@@ -171,6 +171,7 @@
   }
   ```
 
+---
 
 
 ### **8. Upload Media**
@@ -188,6 +189,7 @@
   }
   ```
 
+---
 
 ### **9. Employee Logout**
 - **Method:** GET  
@@ -196,3 +198,36 @@
 
 #### **Frontend Implementation (Before Calling Logout API)**
 Before making a request to the logout API, ensure the JWT token is removed from storage:
+
+---
+
+
+### **6. create Employee **
+- **Method:** PATCH  
+- **Endpoint:** `/api/updateemployee/`
+- **Description:** Updates an existing employee's details.
+- **Request Body:**  
+  ```json
+  {
+     "avatar":"string url of avatar image"
+  }
+  ```
+- **Response:**  
+  ```json
+  {
+    "success": true,
+    "message": "Employee created successfully",
+     "employeeObj": {
+      "employeeId": "string",
+      "name": "string",
+      "phone": "string",
+      "role": "string",
+      "bloodGroup": "string",
+      "gender": "string",
+      "email": "string",
+      "dob": "date",
+      "avatar": "string",
+      }
+  }
+
+  ```
