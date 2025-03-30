@@ -9,20 +9,25 @@ const attendenceSchema = new mongoose.Schema({
         type:String,
         required: true
     },
-    employeeId:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Employee',
+    // employeeId: {
+    //     type: mongoose.Schema.Types.ObjectId, // Reference to Employee's _id
+    //     ref: 'Employee', // Reference the Employee model
+    //     required: true
+    // },
+    employeeId: {
+        type: String, 
         required: true
     },
-
     checkIn:{
         type: Date,
-        default: Date.now
+        // default: Date.now()
+        // required: true
     },
     
     checkOut:{
         type: Date,
-        default: Date.now
+        // default: Date.now()
+
     }
 
     

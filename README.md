@@ -231,3 +231,78 @@ Before making a request to the logout API, ensure the JWT token is removed from 
   }
 
   ```
+
+
+
+  ---
+
+### **10. Employee Check-In**
+- **Method:** POST  
+- **Endpoint:** `/api/attendence/checkIn`  
+- **Description:** Allows an employee to check in for the day. If the employee has already checked in for the day, it will return an error message.  
+- **Headers:**  
+  - `Authorization`: `Bearer <JWT Token>`  
+- **Request Body:**  
+  ```json
+  {
+    "location": "string",
+    "url": "string"
+  }
+
+  - **Response:**  
+  ```json
+
+    {
+         "message": "Check-in added successfully",
+         "attendance": {
+        "_id": "string",
+        "employeeId": "string",
+        "location": "string",
+        "url": "string",
+        "checkIn": "date",
+        "createdAt": "date",
+        "updatedAt": "date"
+    }
+  }
+  - **Response: if its already checkin** 
+  {
+  "message": "Employee has already checked in for today"
+  }
+
+
+
+---
+
+### **11. Employee Check-Out**
+- **Method:** PATCH  
+- **Endpoint:** `/api/attendence/checkout`  
+- **Description:** Allows an employee to check out for the day. If the employee has not checked in yet, it will return an error message. If the employee has already checked out, it will also return an error message.  
+- **Headers:**  
+  - `Authorization`: `Bearer <JWT Token>`  
+- **Response (Success):**  
+  ```json
+  {
+    "message": "Check-out added successfully",
+    "attendance": {
+      "_id": "string",
+      "employeeId": "string",
+      "location": "string",
+      "url": "string",
+      "checkIn": "date",
+      "checkOut": "date",
+      "createdAt": "date",
+      "updatedAt": "date"
+    }
+  }
+
+  **Response: if checkout api is called without checked in**  
+
+  {
+  "message": "Employee has not checked in yet"
+  }
+
+ **Response: if checkout api is called with already checked out**  
+
+  {
+  "message": "Employee has already checked out for today"
+  }
