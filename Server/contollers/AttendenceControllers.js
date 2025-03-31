@@ -38,9 +38,9 @@ const addCheckIn = async (req, res) => {
             checkIn: { $gte: today } // Check if there's a record for today
         });
 
-        if (existingAttendance) {
-            return res.status(400).json({ message: "Employee has already checked in for today" });
-        }
+        // if (existingAttendance) {
+        //     return res.status(400).json({ message: "Employee has already checked in for today" });
+        // }
 
         // Create a new attendance document with check-in time
         const attendance = new Attendence({
@@ -77,9 +77,9 @@ const addCheckout = async (req, res) => {
             return res.status(404).json({ message: "Employee has not checked in yet" });
         }
 
-        if (attendance.checkOut) {
-            return res.status(400).json({ message: "Employee has already checked out for today" });
-        }
+        // if (attendance.checkOut) {
+        //     return res.status(400).json({ message: "Employee has already checked out for today" });
+        // }
 
         // Update the check-out time
         attendance.checkOut = new Date(); // Set current time as check-out
