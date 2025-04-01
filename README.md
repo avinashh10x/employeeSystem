@@ -202,7 +202,7 @@ Before making a request to the logout API, ensure the JWT token is removed from 
 ---
 
 
-### **6. create Employee **
+### **10. create Employee**
 - **Method:** PATCH  
 - **Endpoint:** `/api/createemployee/`
 - **Description:** create an employee.
@@ -236,10 +236,10 @@ Before making a request to the logout API, ensure the JWT token is removed from 
 
   ---
 
-### **10. Employee Check-In**
+### **11. Employee Check-In**
 - **Method:** POST  
 - **Endpoint:** `/api/attendence/checkIn`  
-- **Description:** Allows an employee to check in for the day. If the employee has already checked in for the day, it will return an error message.  
+- **Description:** Allows an employee to check in for the day. If the employee has already checked in twice for the day, it will return an error message.  
 - **Headers:**  
   - `Authorization`: `Bearer <JWT Token>`  
 - **Request Body:**  
@@ -248,35 +248,41 @@ Before making a request to the logout API, ensure the JWT token is removed from 
     "location": "string",
     "url": "string"
   }
-
-  - **Response:**  
+  ```
+- **Response (Success):**  
   ```json
-
-    {
-         "message": "Check-in added successfully",
-         "attendance": {
-        "_id": "string",
-        "employeeId": "string",
-        "location": "string",
-        "url": "string",
-        "checkIn": "date",
-        "createdAt": "date",
-        "updatedAt": "date"
+  {
+    "message": "Check-in added successfully",
+    "attendance": {
+      "_id": "string",
+      "employeeId": "string",
+      "location": "string",
+      "url": "string",
+      "checkIn": "date",
+      "createdAt": "date",
+      "updatedAt": "date"
     }
   }
-  - **Response: if its already checkin** 
+  ```
+- **Response (Check-In Limit Reached):**  
+  ```json
   {
-  "message": "Employee has already checked in for today"
+    "message": "Check-in limit reached for today"
   }
-
-
+  ```
+- **Response (Missing Fields):**  
+  ```json
+  {
+    "message": "Location and URL are required"
+  }
+  ```
 
 ---
 
-### **11. Employee Check-Out**
+### **12. Employee Check-Out**
 - **Method:** PATCH  
 - **Endpoint:** `/api/attendence/checkout`  
-- **Description:** Allows an employee to check out for the day. If the employee has not checked in yet, it will return an error message. If the employee has already checked out, it will also return an error message.  
+- **Description:** Allows an employee to check out for the day. If the employee has not checked in yet, it will return an error message. If the employee has already checked out for the last check-in, it will also return an error message.  
 - **Headers:**  
   - `Authorization`: `Bearer <JWT Token>`  
 - **Response (Success):**  
@@ -294,15 +300,70 @@ Before making a request to the logout API, ensure the JWT token is removed from 
       "updatedAt": "date"
     }
   }
-
-  **Response: if checkout api is called without checked in**  
-
+  ```
+- **Response (No Check-In):**  
+  ```json
   {
-  "message": "Employee has not checked in yet"
+    "message": "Employee has not checked in today"
   }
-
- **Response: if checkout api is called with already checked out**  
-
+  ```
+- **Response (Already Checked Out):**  
+  ```json
   {
-  "message": "Employee has already checked out for today"
+    "message": "Already checked out for this entry"
   }
+  ```
+
+---
+
+### **13. Get All Attendance Records**
+- **Method:** GET  
+- **Endpoint:** `/api/attendence/getallAttendence`  
+- **Description:** Retrieves all attendance records for the logged-in employee.  
+- **Headers:**  
+  - `Authorization`: `Bearer <JWT Token>`  
+- **Response:**  
+  ```json
+  [
+    {
+      "_id": "string",
+      "employeeId": "string",
+      "location": "string",
+      "url": "string",
+      "checkIn": "date",
+      "checkOut": "date",
+      "createdAt": "date",
+      "updatedAt": "date"
+    }
+  ]
+  ```
+
+---
+
+### **14. Get Today's Attendance**
+- **Method:** GET  
+- **Endpoint:** `/api/attendence/getTodaysAttendence`  
+- **Description:** Retrieves today's attendance records for the logged-in employee.  
+- **Headers:**  
+  - `Authorization`: `Bearer <JWT Token>`  
+- **Response:**  
+  ```json
+  [
+    {
+      "_id": "string",
+      "employeeId": "string",
+      "location": "string",
+      "url": "string",
+      "checkIn": "date",
+      "checkOut": "date",
+      "createdAt": "date",
+      "updatedAt": "date"
+    }
+  ]
+  ```
+- **Response (No Records):**  
+  ```json
+  {
+    "message": "No attendance records found for today"
+  }
+  ```

@@ -1,101 +1,117 @@
-const Attendence = require('../model/attendenceModel.js')
+const Attendence = require('../model/attendenceModel.js');
 const Employee = require('../model/employeeModel');
 
-
-
 const Home = async (req, res) => {
-    res.send('Hello, World! from attendence server');
+    res.send('Hello, World! from attendance server');
 };
-
 
 const getallAttendence = async (req, res) => {
     try {
-        const attendence = await Attendence.find({}).sort({ _id: -1 })
+        const employeeId = req.employeeId;
+
+
+        const attendence = await Attendence.find({ employeeId }).sort({ _id: -1 });
+        if (!attendence.length) {
+
+            console.log(employeeId);
+            
+            return res.status(404).json({ message: "No attendance records found for this employee" });
+        }
         res.json(attendence);
+
     } catch (error) {
-        res.status(500).json({ message: "error while fetching all attendence", error: error });
+        res.status(500).json({ message: "Error fetching attendance records", error });
+    }
+};
+
+const getTodaysAttendence = async (req, res) => {
+    try {
+        const employeeId  = req.employeeId;
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const endOfDay = new Date(today);
+        endOfDay.setHours(23, 59, 59, 999);
+        const attendence = await Attendence.find({ employeeId, checkIn: { $gte: today, $lte: endOfDay } });
+        if (!attendence.length) {
+            return res.status(404).json({ message: "No attendance records found for today" });
+        }
+        res.json(attendence);
+
+
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching today's attendance", error });
+
     }
 }
 
-
 const addCheckIn = async (req, res) => {
     try {
-        const employeeId = req.employeeId; // Extracted from authMiddleware
+        const employeeId = req.employeeId;
         const { location, url } = req.body;
-
-        // Validate required fields
         if (!location || !url) {
             return res.status(400).json({ message: "Location and URL are required" });
         }
 
-        // Get the current date (without time) for comparison
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Reset time to midnight
+        today.setHours(0, 0, 0, 0);
 
-        // Check if an attendance record already exists for today
-        const existingAttendance = await Attendence.findOne({
+        const existingAttendance = await Attendence.find({
             employeeId,
-            checkIn: { $gte: today } // Check if there's a record for today
+            checkIn: { $gte: today }
         });
 
-        // if (existingAttendance) {
-        //     return res.status(400).json({ message: "Employee has already checked in for today" });
-        // }
+        if (existingAttendance.length >= 2) {
+            return res.status(400).json({ message: "Check-in limit reached for today" });
+        }
 
-        // Create a new attendance document with check-in time
         const attendance = new Attendence({
             employeeId,
             location,
             url,
-            checkIn: new Date(), // Set current time as check-in
+            checkIn: new Date(),
         });
-
         await attendance.save();
         res.status(201).json({ message: "Check-in added successfully", attendance });
     } catch (error) {
-        console.error("Error in addCheckIn:", error.message);
         res.status(500).json({ message: "Error while adding check-in", error: error.message });
     }
 };
 
-
 const addCheckout = async (req, res) => {
     try {
-        const employeeId = req.employeeId; // Extracted from authMiddleware
-
-        // Get the current date (without time) for comparison
+        const employeeId = req.employeeId;
         const today = new Date();
-        today.setHours(0, 0, 0, 0); // Reset time to midnight
+        today.setHours(0, 0, 0, 0);
 
-        // Find the attendance record for today
-        const attendance = await Attendence.findOne({
+        const attendance = await Attendence.find({
             employeeId,
-            checkIn: { $gte: today } // Check if there's a record for today
-        });
+            checkIn: { $gte: today }
+        }).sort({ checkIn: -1 });
 
-        if (!attendance) {
-            return res.status(404).json({ message: "Employee has not checked in yet" });
+        if (!attendance.length) {
+            return res.status(404).json({ message: "Employee has not checked in today" });
         }
 
-        // if (attendance.checkOut) {
-        //     return res.status(400).json({ message: "Employee has already checked out for today" });
-        // }
+        const lastAttendance = attendance[0];
+        if (lastAttendance.checkOut) {
+            return res.status(400).json({ message: "Already checked out for this entry" });
+        }
 
-        // Update the check-out time
-        attendance.checkOut = new Date(); // Set current time as check-out
-        await attendance.save();
+        lastAttendance.checkOut = new Date();
+        await lastAttendance.save();
 
-        res.status(200).json({ message: "Check-out added successfully", attendance });
+        res.status(200).json({ message: "Check-out added successfully", attendance: lastAttendance });
     } catch (error) {
-        console.error("Error in addCheckout:", error.message);
         res.status(500).json({ message: "Error while adding check-out", error: error.message });
     }
 };
+
 
 
 module.exports = {
     Home,
     addCheckIn,
     addCheckout,
-    getallAttendence
-}
+    getallAttendence,
+    getTodaysAttendence
+};

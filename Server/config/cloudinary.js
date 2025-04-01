@@ -11,6 +11,7 @@ const uploadOnCloudinary = (fileBuffer) => {
     return new Promise((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
             { resource_type: 'image' },
+            
             (error, result) => {
                 if (error) {
                     console.error('Error uploading to Cloudinary:', error);

@@ -53,7 +53,7 @@ const EmployeeDetails = () => {
     };
 
     return (
-        <div className="p-10 bg-gray-900 text-white min-h-screen flex justify-center items-center">
+        <div className="p-10 bg-gray-900 text-white min-h-screen flex flex-col justify-center items-center">
             <div className="bg-gray-800 text-white p-8 rounded-xl w-full max-w-4xl shadow-lg flex gap-8">
                 {/* Left Section: Avatar */}
                 <div className="relative flex-shrink-0 flex flex-col justify-center items-center">
@@ -96,6 +96,7 @@ const EmployeeDetails = () => {
                     </div>
                 </div>
             </div>
+            <h1>hello world</h1>
         </div>
     );
 };
