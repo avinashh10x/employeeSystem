@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { getAllEmployees, uploadMedia, updateEmployee } from "../services/EmployeeServices";
 import { PencilIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import EmployeeRecentAttendence from "../component/EmployeeRecentAttendence";
 
 const EmployeeDetails = () => {
     const { employeeId } = useParams();
@@ -96,7 +97,7 @@ const EmployeeDetails = () => {
                     </div>
                 </div>
             </div>
-            <h1>hello world</h1>
+            <EmployeeRecentAttendence/>
         </div>
     );
 };

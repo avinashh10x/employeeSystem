@@ -7,18 +7,13 @@ const Home = async (req, res) => {
 
 const getallAttendence = async (req, res) => {
     try {
-        const employeeId = req.employeeId;
-
+        const employeeId = req.params.employeeId || req.employeeId; 
 
         const attendence = await Attendence.find({ employeeId }).sort({ _id: -1 });
         if (!attendence.length) {
-
-            console.log(employeeId);
-            
             return res.status(404).json({ message: "No attendance records found for this employee" });
         }
         res.json(attendence);
-
     } catch (error) {
         res.status(500).json({ message: "Error fetching attendance records", error });
     }
@@ -26,23 +21,22 @@ const getallAttendence = async (req, res) => {
 
 const getTodaysAttendence = async (req, res) => {
     try {
-        const employeeId  = req.employeeId;
+        const employeeId = req.params.employeeId || req.employeeId; 
+
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const endOfDay = new Date(today);
         endOfDay.setHours(23, 59, 59, 999);
+
         const attendence = await Attendence.find({ employeeId, checkIn: { $gte: today, $lte: endOfDay } });
         if (!attendence.length) {
             return res.status(404).json({ message: "No attendance records found for today" });
         }
         res.json(attendence);
-
-
     } catch (error) {
         res.status(500).json({ message: "Error fetching today's attendance", error });
-
     }
-}
+};
 
 const addCheckIn = async (req, res) => {
     try {
@@ -70,6 +64,7 @@ const addCheckIn = async (req, res) => {
             url,
             checkIn: new Date(),
         });
+        
         await attendance.save();
         res.status(201).json({ message: "Check-in added successfully", attendance });
     } catch (error) {
@@ -106,12 +101,10 @@ const addCheckout = async (req, res) => {
     }
 };
 
-
-
 module.exports = {
-    Home,
+    getallAttendence,
+    getTodaysAttendence,
     addCheckIn,
     addCheckout,
-    getallAttendence,
-    getTodaysAttendence
+    Home
 };

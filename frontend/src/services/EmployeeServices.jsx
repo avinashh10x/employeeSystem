@@ -4,6 +4,8 @@ import axios from "axios";
 // const API_URL = 'https://employeesystem-4wri.onrender.com/api';
 const API_URL = 'http://localhost:8000/api';
 
+const authToken = sessionStorage.getItem('token')
+
 // Fetch all employees
 const getAllEmployees = async () => {
     try {
@@ -31,9 +33,13 @@ const loginEmployee = async (employeeId, password) => {
     try {
         const response = await axios.post(`${API_URL}/login`, { employeeId, password });
         // return response.data;
-        if(!response.data){
+        if (!response.data) {
             throw new Error("Invalid credentials");
         }
+        sessionStorage.setItem('token', response.data.token)
+
+        
+
         return response;
     } catch (error) {
         console.error("Error logging in:", error.message);
@@ -88,12 +94,34 @@ const uploadMedia = async (media) => {
     }
 }
 
+
+const getAllAttendence = async (employeeId) => {
+    try {
+        const response = await axios.get(`${API_URL}/attendence/admin/getallAttendence/${employeeId}`, {
+            headers: {
+                Authorization: `Bearer ${authToken}`,
+            },
+        });
+        if (!response) {
+            throw new Error("Invalid credentials from services");
+        }
+
+        return response.data;
+
+    } catch (error) {
+        console.error("Error fetching attendance:", error.message);
+        throw error;
+    }
+}
+
 export {
+
     getAllEmployees,
     createEmployee,
     loginEmployee,
     updateEmployee,
     deleteEmployee,
     logoutEmployee,
-    uploadMedia
+    uploadMedia,
+    getAllAttendence,
 };

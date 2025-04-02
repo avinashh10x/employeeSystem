@@ -18,7 +18,7 @@ const SignIn = () => {
         return
       }
       console.log(response.data)
-      sessionStorage.setItem('token', response.data.token)
+     
       navigate('/dashboard');
     } catch (error) {
       console.error("Error logging in:", error.message);
