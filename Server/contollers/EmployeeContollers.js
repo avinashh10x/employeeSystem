@@ -41,7 +41,7 @@ const GetSingleEmployee = async (req, res) => {
 // Registration API
 const Register = async (req, res) => {
     try {
-        const { employeeId, name, phone, role, bloodGroup, password, gender, dob, email } = req.body;
+        const { employeeId, name, phone, role, bloodGroup, password, gender, dob, email , address} = req.body;
 
         if (!employeeId || !name || !phone || !bloodGroup || !password || !email || !dob) {
             return res.status(400).json({ message: 'Please provide all required fields' });
@@ -65,6 +65,7 @@ const Register = async (req, res) => {
             role,
             bloodGroup,
             dob,
+            address,
             email,
             password: hashedPassword,
 
@@ -148,14 +149,14 @@ const Login = async (req, res) => {
 // Update Employee API
 const UpdateEmployee = async (req, res) => {
     try {
-        const { employeeId, name, phone, role, bloodGroup, password, email, dob, avatar, gender } = req.body;
+        const { employeeId, name, phone, role, bloodGroup, password, email, dob, avatar, gender, address } = req.body;
 
         // if (!employeeId || !name || !phone || !bloodGroup || !email || !dob || !gender) {
         //     return res.status(400).json({ message: 'Please provide all required fields' });
         // }
 
 
-        let updateData = { name, phone, role, bloodGroup, email, dob, avatar, gender };
+        let updateData = { name, phone, role, bloodGroup, email, dob, avatar, gender, address };
 
         if (password) {
             updateData.password = await bcrypt.hash(password, 12);

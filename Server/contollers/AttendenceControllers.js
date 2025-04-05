@@ -5,9 +5,9 @@ const Home = async (req, res) => {
     res.send('Hello, World! from attendance server');
 };
 
-const getallAttendence = async (req, res) => {
+const getallAttendence0faEmployee = async (req, res) => {
     try {
-        const employeeId = req.params.employeeId || req.employeeId; 
+        const employeeId = req.params.employeeId || req.employeeId;
 
         const attendence = await Attendence.find({ employeeId }).sort({ _id: -1 });
         if (!attendence.length) {
@@ -19,9 +19,21 @@ const getallAttendence = async (req, res) => {
     }
 };
 
-const getTodaysAttendence = async (req, res) => {
+const getAllAttendenceOfEveryOne = async (req, res) => {
     try {
-        const employeeId = req.params.employeeId || req.employeeId; 
+        const attendence = await Attendence.find({}).sort({ _id: -1 });
+        if (!attendence.length) {
+            return res.status(404).json({ message: "No attendance records found" });
+        }
+        res.json(attendence);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching attendance records", error });
+    }
+}
+
+const getTodaysAttendenceOfaEmployee = async (req, res) => {
+    try {
+        const employeeId = req.params.employeeId || req.employeeId;
 
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -64,7 +76,7 @@ const addCheckIn = async (req, res) => {
             url,
             checkIn: new Date(),
         });
-        
+
         await attendance.save();
         res.status(201).json({ message: "Check-in added successfully", attendance });
     } catch (error) {
@@ -102,8 +114,9 @@ const addCheckout = async (req, res) => {
 };
 
 module.exports = {
-    getallAttendence,
-    getTodaysAttendence,
+    getallAttendence0faEmployee,
+    getTodaysAttendenceOfaEmployee,
+    getAllAttendenceOfEveryOne,
     addCheckIn,
     addCheckout,
     Home

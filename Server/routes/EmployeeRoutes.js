@@ -36,4 +36,3 @@ router.get('/admin/getsingleemployee', GetSingleEmployee);
 router.post('/admin/uploadimg', upload.single('image'), uploadmedia);
 
 module.exports = router;
-

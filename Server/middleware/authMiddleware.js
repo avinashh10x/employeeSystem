@@ -13,9 +13,12 @@ const authMiddleware = (req, res, next) => {
             return res.status(401).json({ message: 'Invalid token' });
         }
 
+        // console.log(token)
+        // console.log(decoded)
+
         req.employeeId = decoded.employeeId;
         req.role = decoded.role;
-        
+
         next();
     } catch (error) {
         res.status(401).json({ message: 'Authentication failed', error: error.message });

@@ -7,6 +7,8 @@ import Sidebar from './component/Sidebar';
 import EmployeeList from './component/EmployeeList';
 import EmployeeDetails from './pages/EmployeeDetails';
 import ProtectedRoute from './component/ProtectedRoute';
+import Attendence from './pages/Attendence';
+import Setting from './pages/Setting';
 
 function App() {
   const location = useLocation();
@@ -30,6 +32,8 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<SignIn />} />
           <Route path="/employees" element={<EmployeeList />} />
+          <Route path="/attendence" element={<Attendence />} />
+          <Route path="/setting" element={<Setting />} />
           <Route path="/employeesdetails/:employeeId" element={<EmployeeDetails />} />
         </Routes>
       </div>

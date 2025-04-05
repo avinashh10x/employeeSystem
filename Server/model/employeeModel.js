@@ -44,6 +44,10 @@ const employeeSchema = new mongoose.Schema({
     avatar: {
         type: String,
         default: null
+    },
+    address:{
+        type: String,
+        // required: true
     }
     // jwt:{
     //     type: String,

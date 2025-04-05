@@ -19,7 +19,7 @@ function DeleteEmployee({ id, onDelete }) {
         <>
             <button
                 onClick={() => setShowModal(true)}
-                className="mb-4 px-4 py-2 bg-red-400 text-white rounded hover:bg-red-500"
+                className=" px-4 py-2 bg-red-400 text-white rounded hover:bg-red-500"
             >
                 <TrashIcon className="h-6 text-white" />
             </button>

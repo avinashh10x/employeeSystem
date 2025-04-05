@@ -3,8 +3,9 @@ const {
     Home,
     addCheckIn,
     addCheckout,
-    getallAttendence,
-    getTodaysAttendence
+    getallAttendence0faEmployee,
+    getTodaysAttendenceOfaEmployee,
+    getAllAttendenceOfEveryOne,
 } = require('../contollers/AttendenceControllers');
 
 
@@ -15,14 +16,15 @@ const router = express.Router();
 router.get('/', Home);
 
 // Routes for regular users
-router.get('/getallAttendence', authMiddleware, getallAttendence);
-router.get('/getTodaysAttendence', authMiddleware, getTodaysAttendence);
+router.get('/getallAttendence0faEmployee', authMiddleware, getallAttendence0faEmployee);
+router.get('/getTodaysAttendenceOfaEmployee', authMiddleware, getTodaysAttendenceOfaEmployee);
 router.post('/checkIn', authMiddleware, addCheckIn);
 router.patch('/checkout', authMiddleware, addCheckout);
 
 
 // Admin routes
-router.get('/admin/getallAttendence/:employeeId', authMiddleware, roleMiddleware('admin'), getallAttendence);
-router.get('/admin/getTodaysAttendence/:employeeId', authMiddleware, roleMiddleware('admin'), getTodaysAttendence);
+router.get('/admin/getallAttendence0faEmployee/:employeeId', authMiddleware, roleMiddleware('admin'), getallAttendence0faEmployee);
+router.get('/admin/getTodaysAttendenceOfaEmployee/:employeeId', authMiddleware, roleMiddleware('admin'), getTodaysAttendenceOfaEmployee);
+router.get('/admin/getAllAttendenceOfEveryOne', authMiddleware, roleMiddleware('admin'), getAllAttendenceOfEveryOne);
 
 module.exports = router;

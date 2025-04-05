@@ -63,7 +63,8 @@
   ```json
   {
     "employeeId": "string",
-    "password": "string"
+    "password": "string",
+    "deviceId": "string",
   }
   ```
 - **Response:**  
@@ -135,12 +136,11 @@
 - **Request Body:**  
   ```json
   {
-    "employeeId": "string",
     "name": "string",
     "phone": "string",
     "role": "string",
-    "bloodGroup": "string",
-    "password": "string",
+    "email": "string",
+    "address":"string"
   }
   ```
 - **Response:**  
