@@ -41,7 +41,7 @@ const GetSingleEmployee = async (req, res) => {
 // Registration API
 const Register = async (req, res) => {
     try {
-        const { employeeId, name, phone, role, bloodGroup, password, gender, dob, email , address} = req.body;
+        const { employeeId, name, phone, role, bloodGroup, password, gender, dob, email, address } = req.body;
 
         if (!employeeId || !name || !phone || !bloodGroup || !password || !email || !dob) {
             return res.status(400).json({ message: 'Please provide all required fields' });
@@ -149,12 +149,13 @@ const Login = async (req, res) => {
 // Update Employee API
 const UpdateEmployee = async (req, res) => {
     try {
-        const { employeeId, name, phone, role, bloodGroup, password, email, dob, avatar, gender, address } = req.body;
+        const { name, phone, role, bloodGroup, password, email, dob, avatar, gender, address } = req.body;
 
         // if (!employeeId || !name || !phone || !bloodGroup || !email || !dob || !gender) {
         //     return res.status(400).json({ message: 'Please provide all required fields' });
         // }
 
+        const employeeId = req.employeeId
 
         let updateData = { name, phone, role, bloodGroup, email, dob, avatar, gender, address };
 
@@ -167,6 +168,9 @@ const UpdateEmployee = async (req, res) => {
             updateData,
             { new: true, runValidators: true }
         );
+
+
+
 
         if (!updatedEmployee) {
             return res.status(404).json({ message: 'Employee not found' });
