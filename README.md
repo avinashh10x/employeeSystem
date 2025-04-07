@@ -140,7 +140,8 @@
     "phone": "string",
     "role": "string",
     "email": "string",
-    "address":"string"
+    "address":"string",
+    "avatar":"string"
   }
   ```
 - **Response:**  

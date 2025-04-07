@@ -18,6 +18,10 @@ const attendenceSchema = new mongoose.Schema({
         type: String, 
         required: true
     },
+    name:{
+        type: String,
+        // required: true
+    },
     checkIn:{
         type: Date,
         // default: Date.now()

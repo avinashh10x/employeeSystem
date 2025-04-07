@@ -4,7 +4,7 @@ import axios from "axios";
 // const API_URL = 'https://employeesystem-4wri.onrender.com/api';
 const API_URL = 'http://localhost:8000/api';
 
-const authToken = sessionStorage.getItem('token')
+const authToken = localStorage.getItem('token')
 
 // Fetch all employees
 const getAllEmployees = async () => {
@@ -36,7 +36,7 @@ const loginEmployee = async (employeeId, password) => {
         if (!response.data) {
             throw new Error("Invalid credentials");
         }
-        sessionStorage.setItem('token', response.data.token)
+        localStorage.setItem('token', response.data.token)
 
 
 
@@ -160,6 +160,26 @@ const getAllAttendenceOfEveryOne = async () => {
     }
 }
 
+const getTodaysAttendenceOfAllEmployee = async () => {
+    try {
+        const response = await axios.get(`${API_URL}/attendence/admin/getTodaysAttendenceOfAllEmployee`, {
+            headers: {
+                Authorization: `Bearer ${authToken}`,
+            },
+        });
+        if (!response) {
+            throw new Error("Invalid credentials from services");
+        }
+        console.log(response)
+
+        return response.data;
+
+    } catch (error) {
+        console.error("Error fetching attendance of today:", error);
+        throw error;
+    }
+}
+
 
 
 export {
@@ -175,4 +195,5 @@ export {
     getallAttendence0faEmployee,
     getTodaysAttendenceOfaEmployee,
     getAllAttendenceOfEveryOne,
+    getTodaysAttendenceOfAllEmployee,
 };

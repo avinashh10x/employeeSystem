@@ -5,6 +5,7 @@ const Home = async (req, res) => {
     res.send('Hello, World! from attendance server');
 };
 
+
 const getallAttendence0faEmployee = async (req, res) => {
     try {
         const employeeId = req.params.employeeId || req.employeeId;
@@ -15,9 +16,10 @@ const getallAttendence0faEmployee = async (req, res) => {
         }
         res.json(attendence);
     } catch (error) {
-        res.status(500).json({ message: "Error fetching attendance records", error });
+        res.status(500).json({ message: "Error while fetching getting all attendence of a employee ", error });
     }
 };
+
 
 const getAllAttendenceOfEveryOne = async (req, res) => {
     try {
@@ -27,7 +29,24 @@ const getAllAttendenceOfEveryOne = async (req, res) => {
         }
         res.json(attendence);
     } catch (error) {
-        res.status(500).json({ message: "Error fetching attendance records", error });
+        res.status(500).json({ message: "Error while fetching getting all attendence of all employee ", error });
+    }
+}
+
+const getTodaysAttendenceOfAllEmployee = async (req, res) => {
+    try {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const endOfDay = new Date(today);
+        endOfDay.setHours(23, 59, 59, 999);
+
+        const attendence = await Attendence.find({ checkIn: { $gte: today, $lte: endOfDay } }).sort({ _id: -1 });
+        if (!attendence.length) {
+            return res.status(404).json({ message: "No attendance records found for today" });
+        }
+        res.json(attendence);
+    } catch (error) {
+        res.status(500).json({ message: "Error fetching today's attendance of all employee", error });
     }
 }
 
@@ -46,7 +65,7 @@ const getTodaysAttendenceOfaEmployee = async (req, res) => {
         }
         res.json(attendence);
     } catch (error) {
-        res.status(500).json({ message: "Error fetching today's attendance", error });
+        res.status(500).json({ message: "Error while fetching today's attendance of a employee", error });
     }
 };
 
@@ -70,9 +89,17 @@ const addCheckIn = async (req, res) => {
             return res.status(400).json({ message: "Check-in limit reached for today" });
         }
 
+        const employeeData = await Employee.findOne({employeeId}).select('name');
+
+        if (!employeeData) {
+            return res.status(404).json({ message: "Employee not found" });
+        }
+
+
         const attendance = new Attendence({
             employeeId,
             location,
+            name: employeeData.name,
             url,
             checkIn: new Date(),
         });
@@ -119,5 +146,6 @@ module.exports = {
     getAllAttendenceOfEveryOne,
     addCheckIn,
     addCheckout,
-    Home
+    Home,
+    getTodaysAttendenceOfAllEmployee
 };

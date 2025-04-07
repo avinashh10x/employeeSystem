@@ -54,36 +54,52 @@ const EmployeeDetails = () => {
     };
 
     return (
-        <div className="p-10 bg-gray-900 text-white min-h-screen flex flex-col justify-center items-center">
-            <div className="bg-gray-800 text-white p-8 rounded-xl w-full max-w-4xl shadow-lg flex gap-8">
+        <div className="p-10 bg-gray-900 text-white min-h-screen flex flex-col">
+            <div className=" flex justify-between items-center mb-5">
+                <div className="">
+                    <h2 className="text-3xl font-semibold">Staff Details</h2>
+                    <p className="text-gray-600">Track and manage employee attendance records</p>
+                </div>
+                {/* <CreateEmployee onEmployeeCreated={handleEmployeeCreated} /> */}
+            </div>
+
+            <div className="bg-gray-800 grid-cols-3 text-white p-8 rounded-xl w-full shadow-lg gap-8">
                 {/* Left Section: Avatar */}
-                <div className="relative flex-shrink-0 flex flex-col justify-center items-center">
-                    {employee.avatar ? (
-                        <img
-                            src={employee.avatar}
-                            alt="Avatar"
-                            className="h-60 w-60 rounded-full object-cover"
-                        />
-                    ) : (
-                        <UserCircleIcon className="h-60 text-white" />
-                    )}
-                    {/* Pencil Icon for Editing */}
-                    <label className="absolute bottom-20 right-10 bg-gray-700 p-2 rounded-full cursor-pointer hover:bg-gray-600">
-                        <PencilIcon className="h-5 w-5 text-white" />
-                        <input
-                            type="file"
-                            className="hidden"
-                            onChange={handleImageChange}
-                        />
-                    </label>
-                    {/* Center the button */}
-                    <div className="mt-4">
-                        <button className="w-30 h-10 bg-blue-300 rounded-2xl">Update</button>
+                <div className="col-span-3">
+
+                    <div className="relative flex-shrink-0 flex flex-col justify-center items-center">
+                        {employee.avatar ? (
+                            <img
+                                src={employee.avatar}
+                                alt="Avatar"
+                                className="h-60 w-60 rounded-full object-cover"
+                            />
+                        ) : (
+                            <UserCircleIcon className="h-60 text-white" />
+                        )}
+                        {/* Pencil Icon for Editing */}
+                        <label className="absolute bottom-20 right-10 bg-gray-700 p-2 rounded-full cursor-pointer hover:bg-gray-600">
+                            <PencilIcon className="h-5 w-5 text-white" />
+                            <input
+                                type="file"
+                                className="hidden"
+                                onChange={handleImageChange}
+                            />
+                        </label>
+                        {/* Center the button */}
+                        <div className="mt-4">
+                            <h2 className="text-3xl font-bold text-center">{employee.name} Pandit</h2>
+                            <p className=" text-center text-gray-400">{employee.role}</p>
+                        </div>
                     </div>
                 </div>
+
                 {/* Right Section: Employee Details */}
 
                 <div className="flex-grow">
+                    <div>
+
+                    </div>
                     <h2 className="text-3xl font-bold text-center border-b pb-4 mb-6">Employee Details</h2>
                     <div className="grid grid-cols-2 gap-6 text-lg">
                         <div><strong className="text-gray-400">Employee ID:</strong> <span className="font-medium">{employee.employeeId}</span></div>
@@ -97,7 +113,7 @@ const EmployeeDetails = () => {
                     </div>
                 </div>
             </div>
-            <EmployeeRecentAttendence/>
+            {/* <EmployeeRecentAttendence/> */}
         </div>
     );
 };

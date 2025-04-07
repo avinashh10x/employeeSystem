@@ -6,6 +6,7 @@ const {
     getallAttendence0faEmployee,
     getTodaysAttendenceOfaEmployee,
     getAllAttendenceOfEveryOne,
+    getTodaysAttendenceOfAllEmployee,
 } = require('../contollers/AttendenceControllers');
 
 
@@ -26,5 +27,7 @@ router.patch('/checkout', authMiddleware, addCheckout);
 router.get('/admin/getallAttendence0faEmployee/:employeeId', authMiddleware, roleMiddleware('admin'), getallAttendence0faEmployee);
 router.get('/admin/getTodaysAttendenceOfaEmployee/:employeeId', authMiddleware, roleMiddleware('admin'), getTodaysAttendenceOfaEmployee);
 router.get('/admin/getAllAttendenceOfEveryOne', authMiddleware, roleMiddleware('admin'), getAllAttendenceOfEveryOne);
+router.get('/admin/getTodaysAttendenceOfAllEmployee', authMiddleware, roleMiddleware('admin'), getTodaysAttendenceOfAllEmployee);
+
 
 module.exports = router;
