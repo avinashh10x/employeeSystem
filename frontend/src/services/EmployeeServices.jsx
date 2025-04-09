@@ -17,6 +17,16 @@ const getAllEmployees = async () => {
     }
 }
 
+const getAllDataOfEmployee = async (employeeId) => {
+    try {
+        const response = await axios.get(`${API_URL}/admin/getsingleemployee/:${employeeId}`)
+        return response.data
+    } catch (error) {
+        console.error("Error fetching employees:", error.message);
+        throw error
+    }
+}
+
 // Register a new employee
 const createEmployee = async (employee) => {
     try {
@@ -196,4 +206,5 @@ export {
     getTodaysAttendenceOfaEmployee,
     getAllAttendenceOfEveryOne,
     getTodaysAttendenceOfAllEmployee,
+    getAllDataOfEmployee
 };

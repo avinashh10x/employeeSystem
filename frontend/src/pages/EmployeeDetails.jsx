@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
-import { getAllEmployees, uploadMedia, updateEmployee } from "../services/EmployeeServices";
+import { getAllEmployees, uploadMedia, updateEmployee, getAllDataOfEmployee } from "../services/EmployeeServices";
 import { PencilIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 import EmployeeRecentAttendence from "../component/EmployeeRecentAttendence";
 
@@ -12,9 +12,10 @@ const EmployeeDetails = () => {
     useEffect(() => {
         if (!employee) {
             const fetchEmployee = async () => {
-                const employees = await getAllEmployees();
-                const foundEmployee = employees.find(emp => emp.employeeId === employeeId);
-                setEmployee(foundEmployee);
+                const response = await getAllDataOfEmployee(employeeId);
+                // const foundEmployee = employees.find(emp => emp.employeeId === employeeId);
+                // setEmployee(foundEmployee);
+                console.log(response)
             };
             fetchEmployee();
         }
@@ -88,7 +89,7 @@ const EmployeeDetails = () => {
                         </label>
                         {/* Center the button */}
                         <div className="mt-4">
-                            <h2 className="text-3xl font-bold text-center">{employee.name} Pandit</h2>
+                            <h2 className="text-3xl font-bold text-center">{employee.name}</h2>
                             <p className=" text-center text-gray-400">{employee.role}</p>
                         </div>
                     </div>

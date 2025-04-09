@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { getTodaysAttendenceOfAllEmployee } from '../services/EmployeeServices';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import { useNavigate } from 'react-router-dom';
 
 const data = [
     { name: 'Present', value: 28, fill: '#22c55e' },   // green-500
@@ -10,9 +11,11 @@ const data = [
     { name: 'Half Day', value: 2, fill: '#3b82f6' },   // blue-500
 ];
 
+
 function Attendence() {
     const [attendence, setAttendence] = useState([])
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate()
 
 
     useEffect(() => {
@@ -32,7 +35,10 @@ function Attendence() {
         attendence
     ]);
 
-
+    const handleRowClick = (employee) => {
+        // Navigate to the EmployeeDetails route with the employee ID
+        navigate(`/employeesdetails/${employee.employeeId}`, { state: { employee } });
+    };
 
     return (
         <div className="p-7 bg-gray-900 text-white min-h-screen">
@@ -161,6 +167,7 @@ function Attendence() {
                                     attendence.map((emp, index) => (
                                         <tr
                                             key={emp._id}
+                                            onClick={() => handleRowClick(emp)}
                                             className="text-gray-300 border-gray-800 cursor-pointer hover:bg-gray-800"
                                         >
                                             <td className="p-4">{index + 1}</td>

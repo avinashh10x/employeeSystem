@@ -74,7 +74,10 @@ const addCheckIn = async (req, res) => {
         const employeeId = req.employeeId;
         const { location, url } = req.body;
         if (!location || !url) {
-            return res.status(400).json({ message: "Location and URL are required" });
+            return res.status(400).json({
+                status: false,
+                message: "Location and URL are required"
+            });
         }
 
         const today = new Date();
@@ -89,10 +92,13 @@ const addCheckIn = async (req, res) => {
             return res.status(400).json({ message: "Check-in limit reached for today" });
         }
 
-        const employeeData = await Employee.findOne({employeeId}).select('name');
+        const employeeData = await Employee.findOne({ employeeId }).select('name');
 
         if (!employeeData) {
-            return res.status(404).json({ message: "Employee not found" });
+            return res.status(404).json({
+                status: false,
+                message: "Employee not found"
+            });
         }
 
 
@@ -105,9 +111,17 @@ const addCheckIn = async (req, res) => {
         });
 
         await attendance.save();
-        res.status(201).json({ message: "Check-in added successfully", attendance });
+        res.status(201).json({
+            status: true,
+            message: "Check-in added successfully",
+            attendance
+        });
     } catch (error) {
-        res.status(500).json({ message: "Error while adding check-in", error: error.message });
+        res.status(500).json({
+            status: false,
+            message: "Error while adding check-in",
+            error: error.message
+        });
     }
 };
 
@@ -123,7 +137,10 @@ const addCheckout = async (req, res) => {
         }).sort({ checkIn: -1 });
 
         if (!attendance.length) {
-            return res.status(404).json({ message: "Employee has not checked in today" });
+            return res.status(404).json({
+                status: false,
+                message: "Employee has not checked in today"
+            });
         }
 
         const lastAttendance = attendance[0];
@@ -134,9 +151,17 @@ const addCheckout = async (req, res) => {
         lastAttendance.checkOut = new Date();
         await lastAttendance.save();
 
-        res.status(200).json({ message: "Check-out added successfully", attendance: lastAttendance });
+        res.status(200).json({
+            status: true,
+            message: "Check-out added successfully",
+            attendance: lastAttendance
+        });
     } catch (error) {
-        res.status(500).json({ message: "Error while adding check-out", error: error.message });
+        res.status(500).json({
+            status: false,
+            message: "Error while adding check-out",
+            error: error.message
+        });
     }
 };
 

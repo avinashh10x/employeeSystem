@@ -2,6 +2,7 @@ const Employee = require('../model/employeeModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { default: uploadOnCloudinary } = require('../config/cloudinary');
+const Attendece = require('../model/attendenceModel');
 
 const SECRETKEY = process.env.SECRETKEY || 'yourSecretKey'; // Ensure env variable is set
 
@@ -22,14 +23,20 @@ const GetAllEmployees = async (req, res) => {
 
 const GetSingleEmployee = async (req, res) => {
     try {
-        const employee = await Employee.findOne({ employeeId: req.employeeId }).select('-password');
+        const employeeId = req.params.employeeId || req.employeeId
+        const employee = await Employee.findOne({ employeeId }).select('-password');
+
         if (!employee) {
             return res.status(404).json({ message: 'Employee not found' });
         }
+
+        const attendence = await Attendece.find({ employeeId })
         res.status(200).json({
             success: true,
             message: 'fetched data successfully',
-            employee
+            employee,
+            attendence
+
         });
 
     } catch (error) {
@@ -107,7 +114,10 @@ const Login = async (req, res) => {
         // const employee = await Employee.findOne({ employeeId });
         const employee = await Employee.findOne({ employeeId });
         if (!employee) {
-            return res.status(400).json({ message: 'Invalid credentials' });
+            return res.status(400).json({
+                success: false,
+                message: 'Invalid credentials or Employee ID not Exists'
+            });
         }
 
         // Compare hashed password
@@ -140,7 +150,6 @@ const Login = async (req, res) => {
         console.error("Error in Login API:", error);
         res.status(500).json({
             success: false,
-
             message: 'Server error'
         });
     }

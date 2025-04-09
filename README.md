@@ -110,19 +110,20 @@
 - **Response:**  
   ```json
   {
-    
-     "success": true,
-    "message": "Fetched data successfully",
-    {
-      "employeeId": "string",
-      "name": "string",
-      "phone": "string",
-      "role": "string",
-      "bloodGroup": "string",
-      "gender": "string",
-      "email": "string",
-    }
+    "success": true,
+  "message": "Fetched data successfully",
+  "employee": {
+    "employeeId": "string",
+    "name": "string",
+    "phone": "string",
+    "role": "string",
+    "bloodGroup": "string",
+    "gender": "string",
+    "email": "string"
   }
+  
+}
+
   
   ```
 
@@ -253,27 +254,32 @@ Before making a request to the logout API, ensure the JWT token is removed from 
 - **Response (Success):**  
   ```json
   {
-    "message": "Check-in added successfully",
-    "attendance": {
-      "_id": "string",
-      "employeeId": "string",
-      "location": "string",
-      "url": "string",
-      "checkIn": "date",
-      "createdAt": "date",
-      "updatedAt": "date"
-    }
+  "status": true,
+  "message": "Check-in added successfully",
+  "attendance": {
+    "_id": "string",
+    "employeeId": "string",
+    "location": "string",
+    "name": "string",
+    "url": "string",
+    "checkIn": "date",
+    "createdAt": "date",
+    "updatedAt": "date"
   }
+  }
+
   ```
 - **Response (Check-In Limit Reached):**  
   ```json
   {
+  "status": false,
     "message": "Check-in limit reached for today"
   }
   ```
 - **Response (Missing Fields):**  
   ```json
   {
+    "status": false,
     "message": "Location and URL are required"
   }
   ```
@@ -289,22 +295,25 @@ Before making a request to the logout API, ensure the JWT token is removed from 
 - **Response (Success):**  
   ```json
   {
-    "message": "Check-out added successfully",
-    "attendance": {
-      "_id": "string",
-      "employeeId": "string",
-      "location": "string",
-      "url": "string",
-      "checkIn": "date",
-      "checkOut": "date",
-      "createdAt": "date",
-      "updatedAt": "date"
-    }
+  "status": true,
+  "message": "Check-out added successfully",
+  "attendance": {
+    "_id": "string",
+    "employeeId": "string",
+    "location": "string",
+    "url": "string",
+    "checkIn": "date",
+    "checkOut": "date",
+    "createdAt": "date",
+    "updatedAt": "date"
   }
+  }
+
   ```
 - **Response (No Check-In):**  
   ```json
   {
+    "status": false,
     "message": "Employee has not checked in today"
   }
   ```
@@ -319,32 +328,34 @@ Before making a request to the logout API, ensure the JWT token is removed from 
 
 ### **13. Get All Attendance Records**
 - **Method:** GET  
-- **Endpoint:** `/api/attendence/getallAttendence`  
+- **Endpoint:** `/api/attendence/getallAttendence0faEmployee`  
 - **Description:** Retrieves all attendance records for the logged-in employee.  
 - **Headers:**  
   - `Authorization`: `Bearer <JWT Token>`  
 - **Response:**  
   ```json
   [
-    {
-      "_id": "string",
-      "employeeId": "string",
-      "location": "string",
-      "url": "string",
-      "checkIn": "date",
-      "checkOut": "date",
-      "createdAt": "date",
-      "updatedAt": "date"
-    }
+  {
+    "_id": "string",
+    "employeeId": "string",
+    "location": "string",
+    "name": "string",
+    "url": "string",
+    "checkIn": "date",
+    "checkOut": "date",
+    "createdAt": "date",
+    "updatedAt": "date"
+  }
   ]
+
   ```
 
 ---
 
 ### **14. Get Today's Attendance**
 - **Method:** GET  
-- **Endpoint:** `/api/attendence/getTodaysAttendence`  
-- **Description:** Retrieves today's attendance records for the logged-in employee.  
+- **Endpoint:** `/api/attendence/getTodaysAttendenceOfaEmployee`  
+- **Description:** Fetches today’s attendance records of the logged-in employee.  
 - **Headers:**  
   - `Authorization`: `Bearer <JWT Token>`  
 - **Response:**  
@@ -368,3 +379,156 @@ Before making a request to the logout API, ensure the JWT token is removed from 
     "message": "No attendance records found for today"
   }
   ```
+
+
+  
+
+---
+
+### **15. Admin - Get All Attendance of an Employee**
+- **Method:** GET  
+- **Endpoint:** `/api/attendence/admin/getallAttendence0faEmployee/:employeeId`  
+- **Description:** Admin-only. Get all attendance records of a specific employee.
+
+  
+- **Headers:**  
+  - `Authorization`: `Bearer <JWT Token>`  
+- **Response:**  
+  ```json
+  [
+  {
+    "_id": "string",
+    "employeeId": "string",
+    "location": "string",
+    "name": "string",
+    "url": "string",
+    "checkIn": "2025-04-01T09:00:00Z",
+    "checkOut": "2025-04-01T18:00:00Z",
+    "createdAt": "2025-04-01T09:00:00Z",
+    "updatedAt": "2025-04-01T18:00:00Z"
+  },
+
+  ]
+
+  ```
+- **Response (No Records):**  
+  ```json
+  {
+    "message": "No attendance records found"
+  }
+  ```
+
+
+
+  
+
+---
+
+### **16. Admin - Get Today's Attendance of an Employee**
+- **Method:** GET  
+- **Endpoint:** `/api/attendence/admin/getTodaysAttendenceOfaEmployee/:employeeId`  
+- **Description:** Admin-only. Get all attendance records of a specific employee.
+
+  
+- **Headers:**  
+  - `Authorization`: `Bearer <JWT Token>`  
+- **Response:**  
+  ```json
+  
+    {
+      
+  "_id": "string",
+  "employeeId": "string",
+  "location": "string",
+  "name": "string",
+  "url": "string",
+  "checkIn": "2025-04-09T09:00:00Z",
+  "checkOut": "2025-04-09T18:00:00Z",
+  "createdAt": "2025-04-09T09:00:00Z",
+  "updatedAt": "2025-04-09T18:00:00Z"
+
+    }
+  
+  ```
+- **Response (No Records):**  
+  ```json
+  {
+    "message": "No attendance records found"
+  }
+  ```
+
+
+
+  
+
+---
+
+### **17. Admin - Get All Attendance of All Employees**
+- **Method:** GET  
+- **Endpoint:** `/api/attendence/admin/getAllAttendenceOfEveryOne`  
+- **Description:** Admin-only. Get every attendance record of all employees.
+
+  
+- **Headers:**  
+  - `Authorization`: `Bearer <JWT Token>`  
+- **Response:**  
+  ```json
+  
+    {
+      
+    "_id": "string",
+    "employeeId": "string",
+    "location": "string",
+    "name": "string",
+    "url": "string",
+    "checkIn": "2025-04-05T09:00:00Z",
+    "checkOut": "2025-04-05T18:00:00Z",
+    "createdAt": "2025-04-05T09:00:00Z",
+    "updatedAt": "2025-04-05T18:00:00Z"
+
+    }
+  
+  ```
+- **Response (No Records):**  
+  ```json
+  {
+    "message": "No attendance records found"
+  }
+  ```
+
+
+
+---
+
+### **18. Admin - Get Today's Attendance of All Employees**
+- **Method:** GET  
+- **Endpoint:** `/api/attendence/admin/getAllAttendenceOfEveryOne`  
+- **Description:** Admin-only. Get every attendance record of all employees.
+
+  
+- **Headers:**  
+  - `Authorization`: `Bearer <JWT Token>`  
+- **Response:**  
+  ```json
+  
+    {
+    "_id": "string",
+    "employeeId": "string",
+    "location": "string",
+    "name": "string",
+    "url": "string",
+    "checkIn": "2025-04-09T09:00:00Z",
+    "checkOut": "2025-04-09T18:00:00Z",
+    "createdAt": "2025-04-09T09:00:00Z",
+    "updatedAt": "2025-04-09T18:00:00Z"
+    }
+  
+  ```
+- **Response (No Records):**  
+  ```json
+  {
+    "message": "No attendance records found"
+  }
+  ```
+
+

@@ -13,6 +13,7 @@ const {
 } = require('../contollers/EmployeeContollers');
 const router = express.Router();
 const authMiddleware = require('../middleware/authMiddleware');
+const roleMiddleware = require('../middleware/roleMiddleware');
 const upload = require('../middleware/multer.middleware').default;
 
 router.get('/', Home);
@@ -29,10 +30,11 @@ router.get('/getsingleemployee', authMiddleware, GetSingleEmployee);
 router.get('/logout', authMiddleware, logout);
 router.post('/uploadimg', upload.single('image'), uploadmedia);
 
-router.get('/admin/getemployees', GetAllEmployees);
-router.patch('/admin/updateemployee', UpdateEmployee);
-router.delete('/admin/removeEmployee', removeEmployee);
-router.get('/admin/getsingleemployee', GetSingleEmployee);
-router.post('/admin/uploadimg', upload.single('image'), uploadmedia);
+router.get('/admin/getemployees', authMiddleware, roleMiddleware('admin'), GetAllEmployees);
+router.get('/admin/getsingleemployee/:employeeId', authMiddleware, roleMiddleware('admin'), GetSingleEmployee);
+router.patch('/admin/updateemployee', authMiddleware, roleMiddleware('admin'), UpdateEmployee);
+router.delete('/admin/removeEmployee', authMiddleware, roleMiddleware('admin'), removeEmployee);
+router.get('/admin/getsingleemployee', authMiddleware, roleMiddleware('admin'), GetSingleEmployee);
+router.post('/admin/uploadimg', upload.single('image'), authMiddleware, roleMiddleware('admin'), uploadmedia);
 
 module.exports = router;
