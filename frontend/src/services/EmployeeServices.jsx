@@ -1,8 +1,8 @@
 import axios from "axios";
 
 // Base API URL
-// const API_URL = 'https://employeesystem-4wri.onrender.com/api';
-const API_URL = 'http://localhost:8000/api';
+const API_URL = 'https://employeesystem-4wri.onrender.com/api';
+// const API_URL = 'http://localhost:8000/api';
 
 const authToken = localStorage.getItem('token')
 
