@@ -18,8 +18,8 @@ const SignIn = () => {
         return
       }
       console.log(response.data)
-     
       navigate('/dashboard');
+
     } catch (error) {
       console.error("Error logging in:", error.message);
     }

@@ -17,7 +17,7 @@ const GetAllEmployees = async (req, res) => {
         const employees = await Employee.find({}).sort({ _id: -1 }).select('-password');
         res.json(employees);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        res.status(500).json({ message: error });
     }
 };
 
@@ -130,7 +130,7 @@ const Login = async (req, res) => {
         const token = jwt.sign(
             { employeeId: employee.employeeId, role: employee.role },
             SECRETKEY,
-            // { expiresIn: '1d' }
+            { expiresIn: '7d' }
         );
 
         res.status(200).json({

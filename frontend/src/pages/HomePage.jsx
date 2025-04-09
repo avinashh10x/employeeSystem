@@ -1,4 +1,3 @@
-import React from "react";
 import { UserGroupIcon, BookmarkIcon, HeartIcon } from "@heroicons/react/24/solid";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 

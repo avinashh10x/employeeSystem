@@ -1,25 +1,34 @@
 import axios from "axios";
 
 // Base API URL
-const API_URL = 'https://employeesystem-4wri.onrender.com/api';
-// const API_URL = 'http://localhost:8000/api';
+// const API_URL = 'https://employeesystem-4wri.onrender.com/api';
+const API_URL = 'http://localhost:8000/api';
 
 const authToken = localStorage.getItem('token')
 
 // Fetch all employees
 const getAllEmployees = async () => {
     try {
-        const response = await axios.get(`${API_URL}/admin/getemployees`);
+        const response = await axios.get(`${API_URL}/admin/getemployees`, {
+            headers: {
+                Authorization: `Bearer ${authToken}`,
+            }
+        });
         return response.data;
     } catch (error) {
-        console.error("Error fetching employees:", error.message);
+        console.error("Error fetching employees:", error);
         return [];
     }
 }
 
 const getAllDataOfEmployee = async (employeeId) => {
     try {
-        const response = await axios.get(`${API_URL}/admin/getsingleemployee/:${employeeId}`)
+        const response = await axios.get(`${API_URL}/admin/getsingleemployee/:${employeeId}`, {
+
+            headers: {
+                Authorization: `Bearer ${authToken}`,
+            },
+        })
         return response.data
     } catch (error) {
         console.error("Error fetching employees:", error.message);
@@ -61,7 +70,11 @@ const loginEmployee = async (employeeId, password) => {
 // Update employee details
 const updateEmployee = async (employee) => {
     try {
-        const response = await axios.patch(`${API_URL}/admin/updateemployee`, employee); // Changed PUT to PATCH
+        const response = await axios.patch(`${API_URL}/admin/updateemployee`, employee,{
+            headers: {
+                Authorization: `Bearer ${authToken}`,
+            },
+        }); // Changed PUT to PATCH
         return response.data;
     } catch (error) {
         console.error("Error updating employee:", error);

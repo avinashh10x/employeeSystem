@@ -30,6 +30,7 @@ router.get('/getsingleemployee', authMiddleware, GetSingleEmployee);
 router.get('/logout', authMiddleware, logout);
 router.post('/uploadimg', upload.single('image'), uploadmedia);
 
+
 router.get('/admin/getemployees', authMiddleware, roleMiddleware('admin'), GetAllEmployees);
 router.get('/admin/getsingleemployee/:employeeId', authMiddleware, roleMiddleware('admin'), GetSingleEmployee);
 router.patch('/admin/updateemployee', authMiddleware, roleMiddleware('admin'), UpdateEmployee);
