@@ -283,6 +283,14 @@ Before making a request to the logout API, ensure the JWT token is removed from 
     "message": "Location and URL are required"
   }
   ```
+- **Response (Error while adding check-in):**  
+  ```json
+  {
+  "status": false,
+  "message": "Error while adding check-in",
+  "error": "string"
+  }
+  ```
 
 ---
 
@@ -320,7 +328,16 @@ Before making a request to the logout API, ensure the JWT token is removed from 
 - **Response (Already Checked Out):**  
   ```json
   {
-    "message": "Already checked out for this entry"
+  "status": false,
+  "message": "Already checked out for this entry"
+  }
+  ```
+- **Response (Error while adding check-out):**  
+  ```json
+  {
+  "status": false,
+  "message": "Error while adding check-out",
+  "error": "string"
   }
   ```
 
@@ -361,29 +378,30 @@ Before making a request to the logout API, ensure the JWT token is removed from 
 - **Response:**  
   ```json
 {
-   message: 'API hit successsfully',
-   checkIn_Out: "true",
-   attendence: [
-       {
-         "_id": "string",
-         "employeeId": "string",
-         "location": "string",
-         "url": "string",
-         "checkIn": "date",
-         "checkOut": "date",
-         "createdAt": "date",
-         "updatedAt": "date"
-       }
-    ]
+  "message": "API hit successfully",
+  "checkIn_Out": "true",
+  "attendence": [
+    {
+      "_id": "string",
+      "employeeId": "string",
+      "location": "string",
+      "name": "string",
+      "url": "string",
+      "checkIn": "date",
+      "checkOut": "date",
+      "createdAt": "date",
+      "updatedAt": "date"
+    }
+  ]
 }
-
 
   ```
 - **Response (No Records):**  
   ```json
-  {
-    "message": "No attendance records found for today"
-  }
+{
+  "checkIn_Out": "false",
+  "message": "No attendance records found for today"
+}
   ```
 
 
@@ -460,6 +478,13 @@ Before making a request to the logout API, ensure the JWT token is removed from 
   ```json
   {
     "message": "No attendance records found"
+  }
+  ```
+- **Response (Error while fetching today's attendance of an employee):**  
+  ```json
+  {
+    "message": "Error while fetching today's attendance of an employee",
+    "error": "string"
   }
   ```
 
