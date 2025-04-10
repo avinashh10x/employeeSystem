@@ -22,8 +22,8 @@ function App() {
       {!noSidebarRoutes.includes(location.pathname) && <Sidebar />}
       <div className="w-full">
         <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/dashboard" element={
+          {/* <Route path="/" element={<HomePage />} /> */}
+          <Route path="/" element={
             <ProtectedRoute>
               <HomePage />
             </ProtectedRoute>

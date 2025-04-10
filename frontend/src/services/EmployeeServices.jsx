@@ -7,6 +7,7 @@ const API_URL = 'http://localhost:8000/api';
 const authToken = localStorage.getItem('token')
 
 // Fetch all employees
+
 const getAllEmployees = async () => {
     try {
         const response = await axios.get(`${API_URL}/admin/getemployees`, {
@@ -21,9 +22,10 @@ const getAllEmployees = async () => {
     }
 }
 
-const getAllDataOfEmployee = async (employeeId) => {
+
+const getAllDataOfaEmployee = async (employeeId) => {
     try {
-        const response = await axios.get(`${API_URL}/admin/getsingleemployee/:${employeeId}`, {
+        const response = await axios.get(`${API_URL}/admin/getsingleemployee/${employeeId}`, {
 
             headers: {
                 Authorization: `Bearer ${authToken}`,
@@ -219,5 +221,5 @@ export {
     getTodaysAttendenceOfaEmployee,
     getAllAttendenceOfEveryOne,
     getTodaysAttendenceOfAllEmployee,
-    getAllDataOfEmployee
+    getAllDataOfaEmployee
 };

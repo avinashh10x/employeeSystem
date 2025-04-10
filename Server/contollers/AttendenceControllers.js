@@ -14,7 +14,10 @@ const getallAttendence0faEmployee = async (req, res) => {
         if (!attendence.length) {
             return res.status(404).json({ message: "No attendance records found for this employee" });
         }
-        res.json(attendence);
+        res.json({
+            message: 'API hit successsfully',
+            attendence,
+        });
     } catch (error) {
         res.status(500).json({ message: "Error while fetching getting all attendence of a employee ", error });
     }
@@ -61,11 +64,22 @@ const getTodaysAttendenceOfaEmployee = async (req, res) => {
 
         const attendence = await Attendence.find({ employeeId, checkIn: { $gte: today, $lte: endOfDay } });
         if (!attendence.length) {
-            return res.status(404).json({ message: "No attendance records found for today" });
+            return res.status(404).json({
+                checkIn_Out: "false",
+                message: "No attendance records found for today"
+            });
         }
-        res.json(attendence);
+        res.json({
+            message: 'API hit successsfully',
+            checkIn_Out: "true",
+            attendence
+        });
     } catch (error) {
-        res.status(500).json({ message: "Error while fetching today's attendance of a employee", error });
+        res.status(500).json({
+            checkIn_Out: "false",
+            message: "Error while fetching today's attendance of a employee",
+            error
+        });
     }
 };
 

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const { type } = require('os');
 
 // Define the schema for employee details
 const employeeSchema = new mongoose.Schema({
@@ -45,10 +46,15 @@ const employeeSchema = new mongoose.Schema({
         type: String,
         default: null
     },
-    address:{
+    address: {
         type: String,
         // required: true
+    },
+
+    createProfileStatus: {
+        type: Boolean,
     }
+
     // jwt:{
     //     type: String,
     //     required: true

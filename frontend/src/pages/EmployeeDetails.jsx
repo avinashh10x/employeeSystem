@@ -1,120 +1,249 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
-import { getAllEmployees, uploadMedia, updateEmployee, getAllDataOfEmployee } from "../services/EmployeeServices";
-import { PencilIcon, UserCircleIcon } from "@heroicons/react/24/solid";
-import EmployeeRecentAttendence from "../component/EmployeeRecentAttendence";
+import { useParams } from "react-router-dom";
+import { uploadMedia, updateEmployee, getAllDataOfaEmployee } from "../services/EmployeeServices";
+import { UserCircleIcon } from "@heroicons/react/24/solid";
+import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+
 
 const EmployeeDetails = () => {
     const { employeeId } = useParams();
-    const location = useLocation();
-    const [employee, setEmployee] = useState(location.state?.employee || null);
+    const [employee, setEmployee] = useState(null);
+    const [loading, setLoading] = useState(false);
+
+    const data = [
+        { name: 'Present', value: 28, fill: '#22c55e' },   // green-500
+        { name: 'Absent', value: 8, fill: '#ef4444' },     // red-500
+        { name: 'Late', value: 2, fill: '#facc15' },       // yellow-500
+        { name: 'Half Day', value: 2, fill: '#3b82f6' },   // blue-500
+    ];
+
 
     useEffect(() => {
-        if (!employee) {
-            const fetchEmployee = async () => {
-                const response = await getAllDataOfEmployee(employeeId);
-                // const foundEmployee = employees.find(emp => emp.employeeId === employeeId);
-                // setEmployee(foundEmployee);
-                console.log(response)
-            };
-            fetchEmployee();
-        }
-    }, [employee, employeeId]);
+        const fetchEmployee = async () => {
+            try {
+                const response = await getAllDataOfaEmployee(employeeId);
+                setEmployee(response);
+                console.log(response);
+                setLoading(false);
+            } catch (error) {
+                console.error("Failed to fetch employee data", error);
+            }
+        };
 
-    if (!employee) {
-        return <p className="text-center text-gray-300">Loading employee details...</p>;
-    }
+        fetchEmployee();
+    }, [employeeId]);
 
     const handleImageChange = async (event) => {
+
         const file = event.target.files[0];
         if (file) {
+
             const formData = new FormData();
             formData.append("image", file);
 
-            try {
-                // Upload the image to the backend
-                const uploadResponse = await uploadMedia(formData);
 
+            try {
+                const uploadResponse = await uploadMedia(formData);
                 if (uploadResponse.cloudinaryUrl) {
-                    // Update the employee's avatar in the backend
-                    const updatedEmployee = await updateEmployee({
+                    const updated = await updateEmployee({
                         ...employee,
                         avatar: uploadResponse.cloudinaryUrl,
                     });
 
-                    // Update the local state with the new avatar URL
-                    setEmployee({ ...employee, avatar: uploadResponse.cloudinaryUrl });
-                    alert("Avatar updated successfully!");
-                    console.log(uploadResponse.cloudinaryUrl)
+
+                    setEmployee(updated.employee);
+
+
+                    alert("Avatar updated!");
+
                 }
             } catch (error) {
-                console.error("Error uploading image:", error.message);
-                alert("Failed to upload image.");
+                console.error("Image upload failed:", error);
+                alert("Upload failed.");
             }
         }
     };
 
+
+
+    if (!employee) return <p className="text-center ">Loading employee details...</p>;
+
     return (
-        <div className="p-10 bg-gray-900 text-white min-h-screen flex flex-col">
-            <div className=" flex justify-between items-center mb-5">
-                <div className="">
-                    <h2 className="text-3xl font-semibold">Staff Details</h2>
-                    <p className="text-gray-600">Track and manage employee attendance records</p>
-                </div>
-                {/* <CreateEmployee onEmployeeCreated={handleEmployeeCreated} /> */}
+        <div className="p-6 min-h-screen text-white  ">
+            <div className="">
+                <h2 className="text-3xl font-semibold">Employee Details</h2>
+                <p className="text-gray-600">Track and manage attendance records</p>
             </div>
+            <div className=" rounded-xl  border h-90  border-gray-600 shadow-md p-6 w-full mx-auto">
 
-            <div className="bg-gray-800 grid-cols-3 text-white p-8 rounded-xl w-full shadow-lg gap-8">
-                {/* Left Section: Avatar */}
-                <div className="col-span-3">
-
-                    <div className="relative flex-shrink-0 flex flex-col justify-center items-center">
-                        {employee.avatar ? (
+                <div className="grid  grid-cols-7 gap-6 h-full">
+                    {/* Avatar Section */}
+                    <div className="col-span-2 flex  flex-col items-center">
+                        {employee.employee.avatar ? (
                             <img
-                                src={employee.avatar}
+                                src={employee.employee.avatar}
                                 alt="Avatar"
-                                className="h-60 w-60 rounded-full object-cover"
+                                className="h-50 w-50 rounded-full border-4 border-blue-400 object-cover border"
                             />
                         ) : (
-                            <UserCircleIcon className="h-60 text-white" />
+                            <UserCircleIcon className="h-50 w-50 " />
                         )}
-                        {/* Pencil Icon for Editing */}
-                        <label className="absolute bottom-20 right-10 bg-gray-700 p-2 rounded-full cursor-pointer hover:bg-gray-600">
-                            <PencilIcon className="h-5 w-5 text-white" />
-                            <input
-                                type="file"
-                                className="hidden"
-                                onChange={handleImageChange}
-                            />
+                        <label className="mt-3 cursor-pointer text-sm text-blue-700  hover:underline">
+                            Change Avatar
+                            <input type="file" className="hidden" onChange={handleImageChange} />
                         </label>
-                        {/* Center the button */}
-                        <div className="mt-4">
-                            <h2 className="text-3xl font-bold text-center">{employee.name}</h2>
-                            <p className=" text-center text-gray-400">{employee.role}</p>
+                        <div className="text-center mt-4">
+                            <h3 className="text-3xl font-bold">{employee.employee.name}</h3>
+                            <p className="">{employee.employee.role}</p>
                         </div>
                     </div>
+
+                    {/* Details Section */}
+                    <div className="col-span-2 space-y-3">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <p className=" text-sm">Email</p>
+                                <p className="font-medium">{employee.employee.email || "example@gmail.com"}</p>
+                            </div>
+                            <div>
+                                <p className=" text-sm">Phone Number</p>
+                                <p className="font-medium">{employee.employee.phone || "+1234567890"}</p>
+                            </div>
+                            <div className="col-span-2">
+                                <p className=" text-sm">Address</p>
+                                <p className="font-medium">{employee.employee.address || "7026 Main St"}</p>
+                            </div>
+                        </div>
+
+                        <div className="border-t pt-4 grid grid-cols-2 gap-4">
+                            <div>
+                                <p className=" text-sm">Department</p>
+                                <p className="font-medium">{employee.employee.department || "Operations"}</p>
+                            </div>
+                            <div>
+                                <p className=" text-sm">Employee ID</p>
+                                <p className="font-medium">{employee.employee.employeeId || "EMP-1002"}</p>
+                            </div>
+                            <div>
+                                <p className=" text-sm">Joining Date</p>
+                                <p className="font-medium">
+                                    {new Date(employee.employee.joiningDate || "2021-11-04").toLocaleString()}
+                                </p>
+                            </div>
+                            <div>
+                                <p className=" text-sm">Base Salary</p>
+                                <p className="font-medium">${employee.employee.baseSalary || "90,000"}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="col-span-3 border border-gray-600 rounded-xl p-6 flex items-center gap-6">
+                        {/* Graph Section */}
+                        {/* <h2>Proformance Graph</h2> */}
+                        <div className="flex-1 flex justify-center">
+                            <PieChart width={250} height={250}>
+                                <Pie
+                                    data={data}
+                                    cx="50%"
+                                    cy="50%"
+                                    outerRadius={100}
+                                    dataKey="value"
+                                    isAnimationActive={true}
+                                    animationDuration={1000}
+                                    animationEasing="ease-out"
+                                >
+                                    {data.map((entry, index) => (
+                                        <Cell key={`cell-${index}`} fill={entry.fill} />
+                                    ))}
+                                </Pie>
+                                <Tooltip />
+                            </PieChart>
+                        </div>
+
+                        {/* Legend / Details Section */}
+                        <div className="flex-1 space-y-2 text-sm">
+                            {data.map((item, index) => (
+                                <div key={index} className="flex justify-between items-center">
+                                    <span className="flex items-center gap-2">
+                                        <span
+                                            className="inline-block w-4 h-4 rounded-full"
+                                            style={{ backgroundColor: item.fill }}
+                                        ></span>
+                                        {item.name}
+                                    </span>
+                                    <span className="font-semibold">{item.value}</span>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+
+
                 </div>
 
-                {/* Right Section: Employee Details */}
+            </div>
+            <div className="mt-6">
+                <h2 className="text-2xl font-semibold">Attendance Records</h2>
+                <p className="text-gray-600">View and manage attendance records</p>
+                <div>
+                    {loading ? (
+                        <p>Loading...</p>
+                    ) : (
+                        <div className="border border-gray-500 shadow rounded-xl">
+                            <table className="w-full shadow px-5">
+                                <thead className="rounded-2xl">
+                                    <tr className="border-b border-gray-500 text-left rounded-2xl">
+                                        <th className="p-4">#</th>
+                                        <th className="p-4">ID</th>
+                                        {/* <th className="p-4">Name</th> */}
+                                        <th className="p-4">Location</th>
+                                        <th className="p-4">Status</th>
+                                        {/* <th className="p-4">URL</th> */}
+                                        <th className="p-4">Check-In</th>
+                                        <th className="p-4">Check-Out</th>
+                                        {/* <th className="p-4">Created At</th> */}
+                                        <th className="p-4">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {employee.attendence.length > 0 ? (
+                                        employee.attendence.map((emp, index) => (
+                                            <tr
+                                                key={emp._id}
+                                                className="text-gray-300 border-gray-800 cursor-pointer hover:bg-gray-800">
+                                                <td className="p-4">{index + 1}</td>
+                                                <td className="p-4">{emp.employeeId}</td>
+                                                {/* <td className="p-4">{emp.name ? emp.name : 'NA'}</td> */}
+                                                <td className="p-4">{emp.location}</td>
+                                                <td className="p-4">{emp.checkIn ? "Present" : "Absent"}</td>
+                                                {/* <td className="p-4">{emp.url}</td> */}
+                                                <td className="p-4">
+                                                    {emp.checkIn ? new Date(emp.checkIn).toLocaleString() : "—"}
+                                                </td>
+                                                <td className="p-4">
+                                                    {emp.checkOut ? new Date(emp.checkOut).toLocaleString() : "—"}
+                                                </td>
+                                                {/* <td className="p-4">
+                                                {emp.createdAt ? new Date(emp.createdAt).toLocaleString() : "—"}
+                                            </td> */}
+                                                <td className="p-4">
+                                                    <button className="text-blue-400 hover:underline">View</button>
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        <tr>
+                                            <td colSpan="9" className="p-2 text-center">
+                                                No check-ins found
+                                            </td>
+                                        </tr>
+                                    )}
+                                </tbody>
+                            </table>
+                        </div>
 
-                <div className="flex-grow">
-                    <div>
-
-                    </div>
-                    <h2 className="text-3xl font-bold text-center border-b pb-4 mb-6">Employee Details</h2>
-                    <div className="grid grid-cols-2 gap-6 text-lg">
-                        <div><strong className="text-gray-400">Employee ID:</strong> <span className="font-medium">{employee.employeeId}</span></div>
-                        <div><strong className="text-gray-400">Name:</strong> <span className="font-medium">{employee.name}</span></div>
-                        <div><strong className="text-gray-400">Role:</strong> <span className="font-medium">{employee.role}</span></div>
-                        <div><strong className="text-gray-400">Phone:</strong> <span className="font-medium">{employee.phone}</span></div>
-                        <div><strong className="text-gray-400">Blood Group:</strong> <span className="font-medium">{employee.bloodGroup}</span></div>
-                        <div><strong className="text-gray-400">Email:</strong> <span className="font-medium">{employee.email}</span></div>
-                        <div><strong className="text-gray-400">Date of Birth:</strong> <span className="font-medium">{new Date(employee.dob).toLocaleDateString()}</span></div>
-                        <div><strong className="text-gray-400">Gender:</strong> <span className="font-medium">{employee.gender}</span></div>
-                    </div>
+                    )}
                 </div>
             </div>
-            {/* <EmployeeRecentAttendence/> */}
         </div>
     );
 };

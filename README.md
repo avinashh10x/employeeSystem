@@ -360,18 +360,24 @@ Before making a request to the logout API, ensure the JWT token is removed from 
   - `Authorization`: `Bearer <JWT Token>`  
 - **Response:**  
   ```json
-  [
-    {
-      "_id": "string",
-      "employeeId": "string",
-      "location": "string",
-      "url": "string",
-      "checkIn": "date",
-      "checkOut": "date",
-      "createdAt": "date",
-      "updatedAt": "date"
-    }
-  ]
+{
+   message: 'API hit successsfully',
+   checkIn_Out: "true",
+   attendence: [
+       {
+         "_id": "string",
+         "employeeId": "string",
+         "location": "string",
+         "url": "string",
+         "checkIn": "date",
+         "checkOut": "date",
+         "createdAt": "date",
+         "updatedAt": "date"
+       }
+    ]
+}
+
+
   ```
 - **Response (No Records):**  
   ```json
@@ -530,5 +536,7 @@ Before making a request to the logout API, ensure the JWT token is removed from 
     "message": "No attendance records found"
   }
   ```
+
+
 
 

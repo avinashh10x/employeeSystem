@@ -75,6 +75,7 @@ const Register = async (req, res) => {
             address,
             email,
             password: hashedPassword,
+            createProfileStatus: true
 
         });
 
@@ -139,6 +140,7 @@ const Login = async (req, res) => {
             token,
             employee: {
                 employeeId: employee.employeeId,
+                createProfileStatus: employee.createProfileStatus,
                 name: employee.name,
                 phone: employee.phone,
                 bloodGroup: employee.bloodGroup,
