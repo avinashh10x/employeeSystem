@@ -1,8 +1,8 @@
 import axios from "axios";
 
 // Base API URL
-// const API_URL = 'https://employeesystem-4wri.onrender.com/api';
-const API_URL = 'http://localhost:8000/api';
+const API_URL = 'https://employeesystem-4wri.onrender.com/api';
+// const API_URL = 'http://localhost:8000/api';
 
 const authToken = localStorage.getItem('token')
 
@@ -58,13 +58,11 @@ const loginEmployee = async (employeeId, password) => {
             throw new Error("Invalid credentials");
         }
         localStorage.setItem('token', response.data.token)
-
-
-
         return response;
     } catch (error) {
-        console.error("Error logging in:", error.message);
+        console.error("Error logging in:", error);
         throw error;
+        
     }
 }
 
@@ -72,7 +70,7 @@ const loginEmployee = async (employeeId, password) => {
 // Update employee details
 const updateEmployee = async (employee) => {
     try {
-        const response = await axios.patch(`${API_URL}/admin/updateemployee`, employee,{
+        const response = await axios.patch(`${API_URL}/admin/updateemployee`, employee, {
             headers: {
                 Authorization: `Bearer ${authToken}`,
             },
@@ -101,6 +99,8 @@ const deleteEmployee = async (employeeId) => {
 const logoutEmployee = async () => {
     try {
         const response = await axios.post(`${API_URL}/logout`);
+        localStorage.removeItem('token'); 
+        
         return response.data;
     } catch (error) {
         console.error("Error logging out:", error.message);
@@ -144,9 +144,9 @@ const getallAttendence0faEmployee = async (employeeId) => {
     }
 }
 
-const getTodaysAttendenceOfaEmployee = async (employeeId) => {
+const getTodaysAttendenceOfanEmployee = async (employeeId) => {
     try {
-        const response = await axios.get(`${API_URL}/attendence/admin/getTodaysAttendenceOfaEmployee/${employeeId}`, {
+        const response = await axios.get(`${API_URL}/attendence/admin/getTodaysAttendenceOfanEmployee/${employeeId}`, {
             headers: {
                 Authorization: `Bearer ${authToken}`,
             },
@@ -175,7 +175,7 @@ const getAllAttendenceOfEveryOne = async () => {
         if (!response) {
             throw new Error("Invalid credentials from services");
         }
-        console.log(response)
+        // console.log(response)
 
         return response.data;
 
@@ -218,7 +218,7 @@ export {
 
     uploadMedia,
     getallAttendence0faEmployee,
-    getTodaysAttendenceOfaEmployee,
+    getTodaysAttendenceOfanEmployee,
     getAllAttendenceOfEveryOne,
     getTodaysAttendenceOfAllEmployee,
     getAllDataOfaEmployee

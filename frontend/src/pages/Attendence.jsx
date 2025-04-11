@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getTodaysAttendenceOfAllEmployee } from '../services/EmployeeServices';
+import { getAllAttendenceOfEveryOne, getTodaysAttendenceOfAllEmployee } from '../services/EmployeeServices';
 import { MagnifyingGlassIcon } from '@heroicons/react/24/solid';
 import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 import { useNavigate } from 'react-router-dom';
@@ -14,23 +14,43 @@ const data = [
 
 function Attendence() {
     const [attendence, setAttendence] = useState([])
+    const [allAttendence, setAllAttendence] = useState([])
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate()
 
 
     useEffect(() => {
-        const fetchAttendence = async () => {
+        const fetchAttendenceOfToday = async () => {
             try {
                 const response = await getTodaysAttendenceOfAllEmployee();
                 console.log(response);
                 setAttendence(response);
                 setLoading(false);
             } catch (error) {
+                console.error("Error fetching attendance:", error.response.data.message);
+                setLoading(false);
+            }
+        };
+        fetchAttendenceOfToday();
+
+        const fetchAllAttendence = async () => {
+            try {
+                const response = await getAllAttendenceOfEveryOne();
+                console.log(response);
+                // setAttendence(response);
+                setAllAttendence(response);
+                setLoading(false);
+            } catch (error) {
                 console.error("Error fetching attendance:", error);
                 setLoading(false);
             }
         };
-        fetchAttendence();
+
+        fetchAllAttendence();
+
+
+
+
     }, [
         attendence
     ]);
@@ -131,7 +151,7 @@ function Attendence() {
 
                 <div className="mb-5 flex justify-between items-center">
                     <div>
-                        <h2 className="text-2xl font-semibold">Attendance Summary</h2>
+                        <h2 className="text-2xl font-semibold">Attendance Summary for Today</h2>
                         <p className="text-gray-600">View who&apos;s present Today</p>
                     </div>
                     <div className="flex border border-gray-600 p-2 rounded hover:border hover:border-blue-600">
@@ -193,12 +213,78 @@ function Attendence() {
                                 ) : (
                                     <tr>
                                         <td colSpan="9" className="p-2 text-center">
-                                            No check-ins found
+                                            No check-ins found for today.
+                                        </td>
+                                    </tr>
+                                )}
+
+                            </tbody>
+                        </table>
+
+                        <div className=" flex justify-between items-center mb-5">
+                            <div className="">
+                                <h2 className="text-2xl font-semibold">Viw Previous Attendence</h2>
+                                <p className="text-gray-600">Track and manage employee attendance records</p>
+                            </div>
+                            {/* <CreateEmployee onEmployeeCreated={handleEmployeeCreated} /> */}
+                        </div>
+
+                        <table className="w-full shadow px-5">
+                            <thead className="rounded-2xl">
+                                <tr className="border-b border-gray-800 text-left rounded-2xl">
+                                    <th className="p-4">#</th>
+                                    <th className="p-4">ID</th>
+                                    <th className="p-4">Name</th>
+                                    <th className="p-4">Location</th>
+                                    <th className="p-4">Status</th>
+                                    {/* <th className="p-4">URL</th> */}
+                                    <th className="p-4">Check-In</th>
+                                    <th className="p-4">Check-Out</th>
+                                    {/* <th className="p-4">Created At</th> */}
+                                    <th className="p-4">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+
+                                {allAttendence.length > 0 ? (
+                                    allAttendence.map((emp, index) => (
+                                        <tr
+                                            key={emp._id}
+                                            onClick={() => handleRowClick(emp)}
+                                            className="text-gray-300 border-gray-800 cursor-pointer hover:bg-gray-800"
+                                        >
+                                            <td className="p-4">{index + 1}</td>
+                                            <td className="p-4">{emp.employeeId}</td>
+                                            <td className="p-4">{emp.name ? emp.name : 'NA'}</td>
+                                            <td className="p-4">{emp.location}</td>
+                                            <td className="p-4">{emp.checkIn ? "Present" : "Absent"}</td>
+                                            {/* <td className="p-4">{emp.url}</td> */}
+                                            <td className="p-4">
+                                                {emp.checkIn ? new Date(emp.checkIn).toLocaleTimeString() : "—"}
+                                            </td>
+                                            <td className="p-4">
+                                                {emp.checkOut ? new Date(emp.checkOut).toLocaleTimeString() : "—"}
+                                            </td>
+                                            {/* <td className="p-4">
+                                                {emp.createdAt ? new Date(emp.createdAt).toLocaleString() : "—"}
+                                            </td> */}
+                                            <td className="p-4">
+                                                <button className="text-blue-400 hover:underline">View</button>
+                                            </td>
+                                        </tr>
+                                    ))
+                                ) : (
+                                    <tr>
+                                        <td colSpan="9" className="p-2 text-center">
+                                            No check-ins found for today.
                                         </td>
                                     </tr>
                                 )}
                             </tbody>
                         </table>
+
+
                     </div>
 
 

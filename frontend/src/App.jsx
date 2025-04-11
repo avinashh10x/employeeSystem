@@ -9,34 +9,35 @@ import EmployeeDetails from './pages/EmployeeDetails';
 import ProtectedRoute from './component/ProtectedRoute';
 import Attendence from './pages/Attendence';
 import Setting from './pages/Setting';
+import { Toaster } from 'react-hot-toast';
+import Admin from './pages/Admin';
 
 function App() {
   const location = useLocation();
-
-  // Define routes where the Sidebar should not be visible
   const noSidebarRoutes = ['/signup', '/signin'];
 
   return (
-    <div className="flex bg-gray-800"> 
-      {/* Conditionally render Sidebar */}
+    <div className="flex bg-gray-800">
       {!noSidebarRoutes.includes(location.pathname) && <Sidebar />}
       <div className="w-full">
         <Routes>
-          {/* <Route path="/" element={<HomePage />} /> */}
-          <Route path="/" element={
-            <ProtectedRoute>
-              <HomePage />
-            </ProtectedRoute>
+          {/* Grouped protected routes */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/dashboard" element={<HomePage />} />
+            <Route path="/employees" element={<EmployeeList />} />
+            <Route path="/attendence" element={<Attendence />} />
+            <Route path="/setting" element={<Setting />} />
+            <Route path="/employeesdetails/:employeeId" element={<EmployeeDetails />} />
+            <Route path='/admin' element={<Admin />} />
+          </Route>
 
-          } />
+          {/* Public routes */}
           <Route path="/signup" element={<Signup />} />
           <Route path="/signin" element={<SignIn />} />
-          <Route path="/employees" element={<EmployeeList />} />
-          <Route path="/attendence" element={<Attendence />} />
-          <Route path="/setting" element={<Setting />} />
-          <Route path="/employeesdetails/:employeeId" element={<EmployeeDetails />} />
         </Routes>
       </div>
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 }

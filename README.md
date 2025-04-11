@@ -64,7 +64,7 @@
   {
     "employeeId": "string",
     "password": "string",
-    "deviceId": "string",
+    "deviceId": "string"
   }
   ```
 - **Response:**  
@@ -251,8 +251,10 @@ Before making a request to the logout API, ensure the JWT token is removed from 
     "url": "string"
   }
   ```
+
 - **Response (Success):**  
   ```json
+  
   {
   "status": true,
   "message": "Check-in added successfully",
@@ -371,7 +373,7 @@ Before making a request to the logout API, ensure the JWT token is removed from 
 
 ### **14. Get Today's Attendance**
 - **Method:** GET  
-- **Endpoint:** `/api/attendence/getTodaysAttendenceOfaEmployee`  
+- **Endpoint:** `/api/attendence/getTodaysAttendenceOfanEmployee`  
 - **Description:** Fetches today’s attendance records of the logged-in employee.  
 - **Headers:**  
   - `Authorization`: `Bearer <JWT Token>`  
@@ -450,7 +452,7 @@ Before making a request to the logout API, ensure the JWT token is removed from 
 
 ### **16. Admin - Get Today's Attendance of an Employee**
 - **Method:** GET  
-- **Endpoint:** `/api/attendence/admin/getTodaysAttendenceOfaEmployee/:employeeId`  
+- **Endpoint:** `/api/attendence/admin/getTodaysAttendenceOfanEmployee/:employeeId`  
 - **Description:** Admin-only. Get all attendance records of a specific employee.
 
   

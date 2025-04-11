@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { uploadMedia, updateEmployee, getAllDataOfaEmployee } from "../services/EmployeeServices";
 import { UserCircleIcon } from "@heroicons/react/24/solid";
-import { PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import { PieChart, Pie, Cell, Tooltip } from 'recharts';
+import toast from "react-hot-toast";
 
 
 const EmployeeDetails = () => {
@@ -27,6 +28,8 @@ const EmployeeDetails = () => {
                 setLoading(false);
             } catch (error) {
                 console.error("Failed to fetch employee data", error);
+                setLoading(false);
+                toast.error("Failed to fetch employee data")
             }
         };
 
@@ -54,15 +57,17 @@ const EmployeeDetails = () => {
                     setEmployee(updated.employee);
 
 
-                    alert("Avatar updated!");
+                    toast.success("Employee Avatar Updated successfully")
+
 
                 }
             } catch (error) {
                 console.error("Image upload failed:", error);
-                alert("Upload failed.");
+                toast.error("Upload failed")
             }
         }
     };
+
 
 
 
@@ -106,7 +111,7 @@ const EmployeeDetails = () => {
                                 <p className="font-medium">{employee.employee.email || "example@gmail.com"}</p>
                             </div>
                             <div>
-                                <p className=" text-sm">Phone Number</p>
+                                <p className=" text-sm" >Phone Number</p>
                                 <p className="font-medium">{employee.employee.phone || "+1234567890"}</p>
                             </div>
                             <div className="col-span-2">
@@ -244,6 +249,7 @@ const EmployeeDetails = () => {
                     )}
                 </div>
             </div>
+
         </div>
     );
 };

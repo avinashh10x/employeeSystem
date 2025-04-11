@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { loginEmployee } from "../services/EmployeeServices";
+import toast from "react-hot-toast";
 
 const SignIn = () => {
   const [Id, setId] = useState('');
@@ -15,13 +16,16 @@ const SignIn = () => {
       console.log(Id, password)
       if (!response) {
         console.log('Login failed')
+        toast.error('login failed')
         return
       }
       console.log(response.data)
+      toast.success('login successful')
       navigate('/dashboard');
 
     } catch (error) {
-      console.error("Error logging in:", error.message);
+      console.error("Error logging in:", error.response.data.message);
+      toast.error(error.response.data.message)
     }
 
 

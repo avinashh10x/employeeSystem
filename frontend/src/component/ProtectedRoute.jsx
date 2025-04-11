@@ -1,10 +1,10 @@
-// filepath: c:\Users\Avinash\Desktop\Dev\employee\frontend\src\component\ProtectedRoute.jsx
+// filepath: src/component/ProtectedRoute.jsx
 import React from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = () => {
     const token = localStorage.getItem('token');
-    return token ? children : <Navigate to="/signin" />;
+    return token ? <Outlet /> : <Navigate to="/signin" />;
 };
 
 export default ProtectedRoute;

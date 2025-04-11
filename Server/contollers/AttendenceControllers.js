@@ -53,7 +53,7 @@ const getTodaysAttendenceOfAllEmployee = async (req, res) => {
     }
 }
 
-const getTodaysAttendenceOfaEmployee = async (req, res) => {
+const getTodaysAttendenceOfanEmployee = async (req, res) => {
     try {
         const employeeId = req.params.employeeId || req.employeeId;
 
@@ -181,7 +181,7 @@ const addCheckout = async (req, res) => {
 
 module.exports = {
     getallAttendence0faEmployee,
-    getTodaysAttendenceOfaEmployee,
+    getTodaysAttendenceOfanEmployee,
     getAllAttendenceOfEveryOne,
     addCheckIn,
     addCheckout,
