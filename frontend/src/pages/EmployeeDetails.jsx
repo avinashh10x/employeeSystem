@@ -48,13 +48,12 @@ const EmployeeDetails = () => {
             try {
                 const uploadResponse = await uploadMedia(formData);
                 if (uploadResponse.cloudinaryUrl) {
-                    const updated = await updateEmployee({
-                        ...employee,
-                        avatar: uploadResponse.cloudinaryUrl,
-                    });
+                    console.log("Image uploaded successfully:", uploadResponse);
+                    const updated = await updateEmployee(employeeId, { avatar: uploadResponse.cloudinaryUrl });
 
 
                     setEmployee(updated.employee);
+                    console.log("Employee updated successfully:", updated);
 
 
                     toast.success("Employee Avatar Updated successfully")

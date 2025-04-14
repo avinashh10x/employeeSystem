@@ -142,6 +142,13 @@ const addCheckIn = async (req, res) => {
 const addCheckout = async (req, res) => {
     try {
         const employeeId = req.employeeId;
+        const { checkOut_location, checkOut_url } = req.body;
+        if (!checkOut_location || !checkOut_url) {
+            return res.status(400).json({
+                status: false,
+                message: "checkOut_location and checkOut_url are required"
+            });
+        }
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
@@ -163,7 +170,10 @@ const addCheckout = async (req, res) => {
         }
 
         lastAttendance.checkOut = new Date();
+        lastAttendance.checkOut_location = checkOut_location;
+        lastAttendance.checkOut_url = checkOut_url;
         await lastAttendance.save();
+
 
         res.status(200).json({
             status: true,

@@ -9,6 +9,14 @@ const attendenceSchema = new mongoose.Schema({
         type:String,
         required: true
     },
+    checkOut_url:{
+        type: String,
+        // required: true
+    },
+    checkOut_location:{
+        type:String,
+        // required: true
+    },
     // employeeId: {
     //     type: mongoose.Schema.Types.ObjectId, // Reference to Employee's _id
     //     ref: 'Employee', // Reference the Employee model

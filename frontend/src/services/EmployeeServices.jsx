@@ -1,8 +1,8 @@
 import axios from "axios";
 
 // Base API URL
-const API_URL = 'https://employeesystem-4wri.onrender.com/api';
-// const API_URL = 'http://localhost:8000/api';
+// const API_URL = 'https://employeesystem-4wri.onrender.com/api';
+const API_URL = 'http://localhost:8000/api';
 
 const authToken = localStorage.getItem('token')
 
@@ -62,15 +62,15 @@ const loginEmployee = async (employeeId, password) => {
     } catch (error) {
         console.error("Error logging in:", error);
         throw error;
-        
+
     }
 }
 
 
 // Update employee details
-const updateEmployee = async (employee) => {
+const updateEmployee = async (employeeId, employee) => {
     try {
-        const response = await axios.patch(`${API_URL}/admin/updateemployee`, employee, {
+        const response = await axios.patch(`${API_URL}/admin/updateemployee/${employeeId}`, employee, {
             headers: {
                 Authorization: `Bearer ${authToken}`,
             },
@@ -99,8 +99,8 @@ const deleteEmployee = async (employeeId) => {
 const logoutEmployee = async () => {
     try {
         const response = await axios.post(`${API_URL}/logout`);
-        localStorage.removeItem('token'); 
-        
+        localStorage.removeItem('token');
+
         return response.data;
     } catch (error) {
         console.error("Error logging out:", error.message);

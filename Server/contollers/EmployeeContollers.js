@@ -166,7 +166,10 @@ const UpdateEmployee = async (req, res) => {
         //     return res.status(400).json({ message: 'Please provide all required fields' });
         // }
 
-        const employeeId = req.employeeId
+        const employeeId = req.employeeId || req.params.employeeId
+        if (!employeeId) {
+            return res.status(400).json({ message: 'Please provide employeeId' });
+        }
 
         let updateData = { name, phone, role, bloodGroup, email, dob, avatar, gender, address };
 

@@ -33,7 +33,7 @@ router.post('/uploadimg', upload.single('image'), uploadmedia);
 
 router.get('/admin/getemployees', authMiddleware, roleMiddleware('admin'), GetAllEmployees);
 router.get('/admin/getsingleemployee/:employeeId', authMiddleware, roleMiddleware('admin'), GetSingleEmployee);
-router.patch('/admin/updateemployee', authMiddleware, roleMiddleware('admin'), UpdateEmployee);
+router.patch('/admin/updateemployee/:employeeId', authMiddleware, roleMiddleware('admin'), UpdateEmployee);
 router.delete('/admin/removeEmployee', authMiddleware, roleMiddleware('admin'), removeEmployee);
 router.get('/admin/getsingleemployee', authMiddleware, roleMiddleware('admin'), GetSingleEmployee);
 router.post('/admin/uploadimg', upload.single('image'), authMiddleware, roleMiddleware('admin'), uploadmedia);
