@@ -302,6 +302,21 @@ Before making a request to the logout API, ensure the JWT token is removed from 
 - **Description:** Allows an employee to check out for the day. If the employee has not checked in yet, it will return an error message. If the employee has already checked out for the last check-in, it will also return an error message.  
 - **Headers:**  
   - `Authorization`: `Bearer <JWT Token>`  
+
+
+- **Request Body:**  
+  ```json
+
+  {
+    "location": "string",
+    "url": "string",
+    "checkOut_url": "string",
+    "checkOut_location": "string"
+  }
+
+  ```
+
+
 - **Response (Success):**  
   ```json
   {
